@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>syst3m 3rr0r</title>
+<style>
+  body {
+  background-image: url('https://i.pinimg.com/1200x/e8/49/0c/e8490c8091b33b08a55e6b0bdb9a9a0a.jpg'); /* arkaplan resmi */
+  background-size: cover; /* resmi ekranı tamamen kaplayacak şekilde */
+  background-position: center; /* ortalanmış */
+  background-repeat: no-repeat; /* tekrar etmesini engeller */
+  color: #00ff00;
+  font-family: "Lucida Console", monospace;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 25, 0.3); /* karanlık mavi overlay */
+  pointer-events: none;
+}
+
+  h1 {
+    text-align: center;
+    margin-top: 20px;
+    text-shadow: 0 0 5px #0f0;
+  }
+
+  .profile {
+    width: 240px;
+    height: 240px;
+    border: 3px solid #00ff00;
+    border-radius: 50%;
+    margin: 20px auto;
+    background-image: url('https://i.pinimg.com/736x/25/8b/1e/258b1e3c259f26db70011dd8a69bd3ce.jpg'); /* profil fotoğrafı örneği */
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 20px #00ff00;
+  }
+
+  .win98 {
+    position: absolute;
+    width: 350px;       /* genişlik */
+    height: 200px;      /* yükseklik */
+    background-color: #c0c0c0;
+    border: 2px solid #808080;
+    box-shadow: 3px 3px 0 #404040, -1px -1px 0 #fff;
+    font-family: "MS Sans Serif", sans-serif;
+    color: black;
+    user-select: none;
+  }
+
+  .title-bar {
+    background: linear-gradient(to right, #000080, #1084d0);
+    color: white;
+    padding: 6px 10px;       /* biraz daha büyük padding */
+    font-weight: bold;
+    font-size: 18px;         /* başlık fontu büyütüldü */
+    cursor: move;            /* sürüklenebilir olduğunu göster */
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .content {
+    padding: 30px;
+    background-color: #d4d0c8;
+    text-align: center;
+  }
+
+  .button {
+    margin-top: 15px;
+    background-color: #d4d0c8;
+    border: 2px outset #fff;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight:700;
+  }
+
+  .button:active {
+    border: 2px inset #fff;
+  }
+
+  /* Basit görsel buton */
+  .close-ind {
+    width:20px;height:18px;border-radius:2px;background:rgba(255,255,255,0.12);text-align:center;line-height:18px;font-weight:700;
+    margin-left:8px;color:#fff;font-size:12px;
+  }
+
+  @media (max-width:640px){
+    .win98{width:88%;left:6% !important}
+  }
+</style>
+</head>
+<body>
+  <h1>totaly not a virus, trust me..</h1>
+  <div class="profile"></div>
+  <audio id="seaSound" src="https://www.soundjay.com/nature/ocean-waves-1.mp3" autoplay loop></audio>
+
+<script>
+/* Ayarlar */
+let clickCount = 0;
+const WIN_W = 350;
+const WIN_H = 200;
+let zCounter = 1000;
+let windowIndex = 0;
+
+/* Yardımcı: HTML kaçış */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+/* Pencere oluşturma */
+function createWindow(x, y, titleText = 'this is the last question, really'){
+  windowIndex++;
+  const id = 'win' + windowIndex;
+  const win = document.createElement('div');
+  win.className = 'win98';
+  win.id = id;
+  win.style.left = (x) + 'px';
+  win.style.top = (y) + 'px';
+  win.style.zIndex = ++zCounter;
+
+  win.innerHTML = `
+    <div class="title-bar" data-win="${id}">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="width:14px;height:14px;background:#0b3;border-radius:2px;display:inline-block"></span>
+        <span class="title-text">${escapeHtml(titleText)}</span>
+      </div>
+      <div style="display:flex;align-items:center">
+        <div class="close-ind" title="close">✕</div>
+      </div>
+    </div>
+    <div class="content">
+      <p>soo, are you sure you want to click this button??</p>
+      <button class="button">yes, but</button>
+    </div>
+  `;
+
+  document.body.appendChild(win);
+
+  // z-index üst yap on mousedown (herhangi bir yere tıklanınca üstte olsun)
+  win.addEventListener('mousedown', ()=> {
+    win.style.zIndex = ++zCounter;
+  });
+
+  // sürükleme için başlık çubuğunu al
+  const titleBar = win.querySelector('.title-bar');
+  makeDraggable(win, titleBar);
+
+  // buton davranışı
+  const btn = win.querySelector('.button');
+  btn.addEventListener('click', ()=>{
+    clickCount++;
+    if(clickCount < 5){
+      // her yeni pencere biraz sağa-alt, "mirror / cascade" efekti
+      createWindow(x + 30, y + 30, 'this is the last question, really');
+    } else {
+      // yönlendirme
+      window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
+    }
+    // butonu pasifleştir ama pencere DOM'da kalsın
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+  });
+
+  // close buton sadece görsel (isteğe göre kaldırılabilir)
+  const closeInd = win.querySelector('.close-ind');
+  closeInd.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    // sadece görsel kapatma efekti verelim (opacity azalt)
+    win.style.opacity = '0.6';
+    addLog('Pencere kapatma simgesine basıldı (görsel).');
+  });
+
+  addLog('Yeni pencere açıldı: ' + id);
+  return win;
+}
+
+/* Basit log gösterimi (console+ekrana) */
+function addLog(msg){
+  console.log(msg);
+  // ekran logu yok, istersen ortada bir log alanı ekleyebilirim
+}
+
+/* Sürükleme fonksiyonu (masaüstü fare için) */
+function makeDraggable(winEl, handleEl){
+  let dragging = false;
+  let startX = 0, startY = 0;
+  let origLeft = 0, origTop = 0;
+
+  // pointer events: destek varsa kullan; yoksa mouse fallback
+  handleEl.addEventListener('pointerdown', startDrag);
+  // fallback mouse (çok eski tarayıcılar)
+  handleEl.addEventListener('mousedown', startDrag);
+
+  function startDrag(e){
+    e.preventDefault();
+    dragging = true;
+    // bring to front
+    winEl.style.zIndex = ++zCounter;
+    // pointer position
+    const rect = winEl.getBoundingClientRect();
+    origLeft = rect.left;
+    origTop = rect.top;
+    startX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
+    startY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+    // capture move events
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup', endDrag);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', endDrag);
+    // prevent text selection while dragging
+    document.body.style.userSelect = 'none';
+  }
+
+  function onMove(e){
+    if(!dragging) return;
+    const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
+    const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
+    const dx = clientX - startX;
+    const dy = clientY - startY;
+    let newLeft = origLeft + dx;
+    let newTop = origTop + dy;
+    // ekran dışına fazla çıkmasını engelle (hafif)
+    const margin = 8;
+    const maxLeft = window.innerWidth - WIN_W - margin;
+    const maxTop = window.innerHeight - WIN_H - margin;
+    if(newLeft < margin) newLeft = margin;
+    if(newTop < margin) newTop = margin;
+    if(newLeft > maxLeft) newLeft = maxLeft;
+    if(newTop > maxTop) newTop = maxTop;
+
+    winEl.style.left = newLeft + 'px';
+    winEl.style.top = newTop + 'px';
+  }
+
+  function endDrag(){
+    dragging = false;
+    document.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerup', endDrag);
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', endDrag);
+    document.body.style.userSelect = '';
+  }
+}
+
+/* Başlangıç: ortalanmış ilk pencere oluştur (WIN_W/2, WIN_H/2 dikkate alındı) */
+const startX = Math.max(20, Math.round(window.innerWidth/2 - WIN_W/2));
+const startY = Math.max(20, Math.round(window.innerHeight/2 - WIN_H/2));
+createWindow(startX, startY);
+
+</script>
+</body>
+</html>
