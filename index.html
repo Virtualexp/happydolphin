@@ -41,9 +41,11 @@
   }
 
   h1 {
+    position: relative;
+    top: -40px;
     font-family: 'Press Start 2P', cursive;
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 26px;
     color: #0f0;
     text-shadow: 0 0 8px #0f0;
     margin: 0;
@@ -60,20 +62,16 @@
     box-shadow: 0 0 20px #00ff00;
   }
 
-  /* --- Gerçek Windows 98 pencere stili --- */
+  /* --- Windows 98 Penceresi (genişletilmiş ve ölçekli içerik) --- */
   .win98 {
     position: absolute;
     background-color: #c0c0c0;
-    width: 280px;
-    height: 160px;
+    width: 320px;
+    height: 190px;
     color: black;
     font-family: "MS Sans Serif", sans-serif;
-    box-sizing: border-box;
     border: 2px solid #000;
-    box-shadow:
-      inset -2px -2px #808080,
-      inset 2px 2px #ffffff;
-    border-radius: 0;
+    box-shadow: inset -2px -2px #808080, inset 2px 2px #ffffff;
     user-select: none;
   }
 
@@ -82,7 +80,7 @@
     color: white;
     padding: 3px 6px;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 14px;
     cursor: move;
     display: flex;
     align-items: center;
@@ -92,15 +90,15 @@
   }
 
   .close-ind {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     background-color: #c0c0c0;
     border: 2px solid #808080;
     box-shadow: inset -1px -1px #fff, inset 1px 1px #404040;
     color: black;
-    font-size: 14px;
+    font-size: 15px;
     text-align: center;
-    line-height: 14px;
+    line-height: 16px;
     font-weight: bold;
     cursor: pointer;
     margin-left: 6px;
@@ -120,44 +118,42 @@
     border-left: 2px solid #808080;
     border-right: 2px solid #ffffff;
     border-bottom: 2px solid #ffffff;
-    padding: 10px 14px;
+    padding: 16px 20px;
   }
 
   .message {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    margin-top: 4px;
+    gap: 12px;
+    margin-top: 6px;
   }
 
   .message-icon {
-    width: 40px;
-    height: 40px;
+    width: 52px;  /* %20 büyütüldü */
+    height: 52px;
     image-rendering: pixelated;
-    margin-top: 0;
   }
-
 
   .message-text {
     text-align: left;
-    line-height: 1.4;
-    font-size: 15px;
+    line-height: 1.6;
+    font-size: 18px;  /* yazı boyutu büyütüldü */
     font-weight: 500;
   }
 
   .button-container {
     display: flex;
     justify-content: flex-end;
-    margin-top: 8px;
+    margin-top: 12px;
   }
 
   .button {
     background-color: #c0c0c0;
     border: 2px solid #808080;
     box-shadow: inset -1px -1px #fff, inset 1px 1px #404040;
-    padding: 3px 14px;
+    padding: 6px 18px;
     cursor: pointer;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .button:active {
@@ -165,9 +161,8 @@
   }
 
   @media (max-width: 768px) {
-    h1 { font-size: 12px; }
+    h1 { font-size: 12px; top: -25px; }
     .profile { width: 160px; height: 160px; }
-    .center-content { top: 15%; gap: 14px; }
   }
 </style>
 </head>
@@ -178,185 +173,165 @@
     <div class="profile"></div>
   </div>
 
-  <script>
-  let clickCount = 0;
-  let zCounter = 1000;
-  let windowIndex = 0;
+<script>
+let clickCount = 0;
+let zCounter = 1000;
+let windowIndex = 0;
 
-  const seaSound = new Audio('underwatersound.mp3');
-  seaSound.loop = true;
-  seaSound.volume = 0.5;
+const seaSound = new Audio('underwatersound.mp3');
+seaSound.loop = true;
+seaSound.volume = 0.5;
 
-  window.addEventListener('click', function initSound() {
-    seaSound.play().catch(err => console.log('Underwater sound engellendi:', err));
-    window.removeEventListener('click', initSound);
+window.addEventListener('click', function initSound() {
+  seaSound.play().catch(err => console.log('Underwater sound engellendi:', err));
+  window.removeEventListener('click', initSound);
+});
+
+const messages = [
+  "so, are you sure you want to click this button?",
+  "hmm... interesting choice.",
+  "you really thought this was the last one?",
+  "don’t trust the dolphin.",
+  "one click closer to enlightenment.",
+  "why do you keep clicking?",
+  "the ocean is watching.",
+  "this might be a bad idea.",
+  "trust issues detected.",
+  "maybe... stop?",
+  "i’m starting to think you like chaos."
+];
+
+const titles = [
+  "System Warning",
+  "AreYouSure.exe",
+  "Critical Question",
+  "Deep Sea Protocol",
+  "dolphinOS Alert",
+  "User Error",
+  "Access Denied",
+  "Mystery Box",
+  "Ocean.exe",
+  "Final Question"
+];
+
+function createWindow(x, y) {
+  windowIndex++;
+  const id = 'win' + windowIndex;
+  const win = document.createElement('div');
+  win.className = 'win98';
+  win.id = id;
+  win.style.left = (x ?? 100) + 'px';
+  win.style.top = (y ?? 100) + 'px';
+  win.style.zIndex = ++zCounter;
+
+  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+  const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+
+  win.innerHTML = `
+    <div class="title-bar">
+      <span>${randomTitle}</span>
+      <div class="close-ind">X</div>
+    </div>
+    <div class="content">
+      <div class="message">
+        <img src="dolphinmini.png" class="message-icon" alt="icon">
+        <div class="message-text">${randomMessage}</div>
+      </div>
+      <div class="button-container">
+        <button class="button">Yes, but</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(win);
+
+  const closeBtn = win.querySelector('.close-ind');
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    createErrorWindow();
   });
 
-  function beep(frequency = 600, duration = 150) {
-    try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = "square";
-      osc.frequency.setValueAtTime(frequency, ctx.currentTime);
-      gain.gain.setValueAtTime(0.2, ctx.currentTime);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + duration / 1000);
-    } catch (e) {
-      console.log("Beep desteklenmiyor:", e);
+  const dolphinSound = new Audio('dolphinsound.mp3');
+  dolphinSound.volume = 0.5;
+  dolphinSound.play().catch(() => {});
+
+  const btn = win.querySelector('.button');
+  btn.addEventListener('click', () => {
+    clickCount++;
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    if (clickCount < 5) {
+      const rect = win.getBoundingClientRect();
+      createWindow(rect.left + 30, rect.top + 30);
+    } else {
+      window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
     }
-  }
+  });
 
-  const messages = [
-    "so, are you sure you want to click this button?",
-    "hmm... interesting choice.",
-    "you really thought this was the last one?",
-    "don’t trust the dolphin.",
-    "one click closer to enlightenment.",
-    "why do you keep clicking?",
-    "the ocean is watching.",
-    "this might be a bad idea.",
-    "trust issues detected.",
-    "maybe... stop?",
-    "i’m starting to think you like chaos."
-  ];
+  makeDraggable(win, win.querySelector('.title-bar'));
+}
 
-  const titles = [
-    "System Warning",
-    "AreYouSure.exe",
-    "Critical Question",
-    "Deep Sea Protocol",
-    "dolphinOS Alert",
-    "User Error",
-    "Access Denied",
-    "Mystery Box",
-    "Ocean.exe",
-    "Final Question"
-  ];
+function createErrorWindow() {
+  const err = document.createElement('div');
+  err.className = 'win98';
+  err.style.width = '300px';
+  err.style.height = '150px';
+  err.style.left = '50%';
+  err.style.top = '50%';
+  err.style.transform = 'translate(-50%, -50%)';
+  err.style.zIndex = ++zCounter + 1000;
 
-  function createWindow(x, y) {
-    windowIndex++;
-    const id = 'win' + windowIndex;
-    const win = document.createElement('div');
-    win.className = 'win98';
-    win.id = id;
-    win.style.left = (x ?? 100) + 'px';
-    win.style.top = (y ?? 100) + 'px';
-    win.style.zIndex = ++zCounter;
-
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-    const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-
-    win.innerHTML = `
-      <div class="title-bar">
-        <span>${randomTitle}</span>
-        <div class="close-ind">X</div>
+  err.innerHTML = `
+    <div class="title-bar" style="background: linear-gradient(to right, #800000, #a00000);">
+      <span>Error</span>
+      <div class="close-ind">X</div>
+    </div>
+    <div class="content" style="display:flex;align-items:center;justify-content:center;gap:10px;">
+      <div style="font-size:32px;">⛔</div>
+      <div style="font-size:15px;line-height:1.4;">
+        <b>Sorry but please answer</b><br>the question ¯\\_(ツ)_/¯
       </div>
-      <div class="content">
-        <div class="message">
-          <img src="dolphinmini.png" class="message-icon" alt="icon">
-          <div class="message-text">${randomMessage}</div>
-        </div>
-        <div class="button-container">
-          <button class="button">Yes, but</button>
-        </div>
-      </div>
-    `;
+    </div>
+  `;
+  document.body.appendChild(err);
 
-    document.body.appendChild(win);
+  const close = err.querySelector('.close-ind');
+  close.addEventListener('click', () => err.remove());
+}
 
-    const closeBtn = win.querySelector('.close-ind');
-    closeBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      beep(440, 200);
-      createErrorWindow();
-    });
+function makeDraggable(win, handle) {
+  let offsetX = 0, offsetY = 0, isDragging = false;
+  handle.style.touchAction = "none";
 
-    const dolphinSound = new Audio('dolphinsound.mp3');
-    dolphinSound.volume = 0.5;
-    dolphinSound.play().catch(() => {});
+  handle.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    isDragging = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    handle.setPointerCapture(e.pointerId);
+  });
 
-    const btn = win.querySelector('.button');
-    btn.addEventListener('click', () => {
-      clickCount++;
-      btn.disabled = true;
-      btn.style.opacity = '0.6';
-      if (clickCount < 5) {
-        const rect = win.getBoundingClientRect();
-        createWindow(rect.left + 30, rect.top + 30);
-      } else {
-        window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
-      }
-    });
+  handle.addEventListener('pointerup', (e) => {
+    isDragging = false;
+    handle.releasePointerCapture(e.pointerId);
+  });
 
-    makeDraggable(win, win.querySelector('.title-bar'));
-  }
+  handle.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    win.style.left = e.clientX - offsetX + 'px';
+    win.style.top = e.clientY - offsetY + 'px';
+  });
+}
 
-  // --- Hata penceresi ---
-  function createErrorWindow() {
-    const err = document.createElement('div');
-    err.className = 'win98';
-    err.style.width = '260px';
-    err.style.height = '120px';
-    err.style.left = '50%';
-    err.style.top = '50%';
-    err.style.transform = 'translate(-50%, -50%)';
-    err.style.zIndex = ++zCounter + 1000;
+function centerWindow() {
+  createWindow(
+    (window.innerWidth - 320) / 2,
+    (window.innerHeight - 190) / 2
+  );
+}
 
-    err.innerHTML = `
-      <div class="title-bar" style="background: linear-gradient(to right, #800000, #a00000);">
-        <span>Error</span>
-        <div class="close-ind">X</div>
-      </div>
-      <div class="content" style="display:flex;align-items:center;justify-content:center;gap:10px;">
-        <div style="font-size:26px;">⛔</div>
-        <div style="font-size:13px;line-height:1.3;">
-          <b>Sorry but please answer</b><br>the question ¯\\_(ツ)_/¯
-        </div>
-      </div>
-    `;
-    document.body.appendChild(err);
+centerWindow();
+</script>
 
-    const close = err.querySelector('.close-ind');
-    close.addEventListener('click', () => err.remove());
-
-    beep(400, 200);
-  }
-
-  function makeDraggable(win, handle) {
-    let offsetX = 0, offsetY = 0, isDragging = false;
-    handle.style.touchAction = "none";
-
-    handle.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      isDragging = true;
-      offsetX = e.clientX - win.offsetLeft;
-      offsetY = e.clientY - win.offsetTop;
-      handle.setPointerCapture(e.pointerId);
-    });
-
-    handle.addEventListener('pointerup', (e) => {
-      isDragging = false;
-      handle.releasePointerCapture(e.pointerId);
-    });
-
-    handle.addEventListener('pointermove', (e) => {
-      if (!isDragging) return;
-      win.style.left = e.clientX - offsetX + 'px';
-      win.style.top = e.clientY - offsetY + 'px';
-    });
-  }
-
-  function centerWindow() {
-    createWindow(
-      (window.innerWidth - 280) / 2,
-      (window.innerHeight - 160) / 2
-    );
-  }
-
-  centerWindow();
-  </script>
 </body>
 </html>
