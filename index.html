@@ -3,76 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>syst3m 3rr0r</title>
+<title>welcome!</title>
 <style>
   body {
-  background-image: url('https://i.pinimg.com/1200x/e8/49/0c/e8490c8091b33b08a55e6b0bdb9a9a0a.jpg'); /* arkaplan resmi */
-  background-size: cover; /* resmi ekranı tamamen kaplayacak şekilde */
-  background-position: center; /* ortalanmış */
-  background-repeat: no-repeat; /* tekrar etmesini engeller */
-  color: #00ff00;
-  font-family: "Lucida Console", monospace;
-  height: 100vh;
-  margin: 0;
-  overflow: hidden;
-}
-body::after {
-  content: "";
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 25, 0.3); /* karanlık mavi overlay */
-  pointer-events: none;
-}
-
+    background-image: url('waves.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #00ff00;
+    font-family: "Lucida Console", monospace;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 25, 0.3);
+    pointer-events: none;
+  }
   h1 {
     text-align: center;
     margin-top: 20px;
     text-shadow: 0 0 5px #0f0;
   }
-
   .profile {
     width: 240px;
     height: 240px;
     border: 3px solid #00ff00;
     border-radius: 50%;
     margin: 20px auto;
-    background-image: url('https://i.pinimg.com/736x/25/8b/1e/258b1e3c259f26db70011dd8a69bd3ce.jpg'); /* profil fotoğrafı örneği */
+    background-image: url('dolphin.jpg');
     background-size: cover;
     background-position: center;
     box-shadow: 0 0 20px #00ff00;
   }
-
   .win98 {
     position: absolute;
-    width: 350px;       /* genişlik */
-    height: 200px;      /* yükseklik */
+    width: 350px;
+    height: 200px;
     background-color: #c0c0c0;
-    border: 2px solid #808080;
-    box-shadow: 3px 3px 0 #404040, -1px -1px 0 #fff;
-    font-family: "MS Sans Serif", sans-serif;
     color: black;
+    font-family: "MS Sans Serif", sans-serif;
     user-select: none;
+
+    /* Gerçek Win98 çerçevesi: iç ve dış kenar 3D efekti */
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+
+    /* Hafif dış gölge: tam hizalı */
+    box-shadow:
+      1px 1px 0 #404040,     /* sağ-alt koyu gölge */
+      -1px -1px 0 #d4d0c8;   /* sol-üst açık yansıma */
+
+    border-radius: 2px;
   }
 
   .title-bar {
     background: linear-gradient(to right, #000080, #1084d0);
     color: white;
-    padding: 6px 10px;       /* biraz daha büyük padding */
+    padding: 3px 6px;
     font-weight: bold;
-    font-size: 18px;         /* başlık fontu büyütüldü */
-    cursor: move;            /* sürüklenebilir olduğunu göster */
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+    font-size: 14px;
+    cursor: move;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 2px solid #ffffff;     /* üst kenar parlak */
+    border-left: 2px solid #ffffff;
+    border-bottom: 2px solid #000000;  /* alt kenar koyu */
+    border-right: 2px solid #000000;
   }
-
-  .content {
-    padding: 30px;
+    .content {
+    padding: 28px 26px 26px 26px; /* alt kısım hafif azaltıldı */
     background-color: #d4d0c8;
     text-align: center;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
   }
-
   .button {
     margin-top: 15px;
     background-color: #d4d0c8;
@@ -82,178 +96,175 @@ body::after {
     font-size: 14px;
     font-weight:700;
   }
-
-  .button:active {
-    border: 2px inset #fff;
-  }
-
-  /* Basit görsel buton */
+  .button:active { border: 2px inset #fff; }
   .close-ind {
-    width:20px;height:18px;border-radius:2px;background:rgba(255,255,255,0.12);text-align:center;line-height:18px;font-weight:700;
-    margin-left:8px;color:#fff;font-size:12px;
+    width:20px;height:18px;border-radius:2px;background:rgba(255,255,255,0.12);
+    text-align:center;line-height:18px;font-weight:700;
+    margin-left:8px;color:#fff;font-size:12px;cursor:pointer;
   }
-
-  @media (max-width:640px){
-    .win98{width:88%;left:6% !important}
-  }
+  @media (max-width:640px){ .win98{width:88%;left:6% !important} }
 </style>
 </head>
 <body>
-  <h1>totaly not a virus, trust me..</h1>
-  <div class="profile"></div>
-  <audio id="seaSound" src="https://www.soundjay.com/nature/ocean-waves-1.mp3" autoplay loop></audio>
+<h1>totaly not a virus, trust me..</h1>
+<div class="profile"></div>
 
 <script>
-/* Ayarlar */
 let clickCount = 0;
-const WIN_W = 350;
-const WIN_H = 200;
 let zCounter = 1000;
 let windowIndex = 0;
 
-/* Yardımcı: HTML kaçış */
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+// Arkaplan deniz sesi
+const seaSound = new Audio('underwatersound.mp3');
+seaSound.loop = true;
+seaSound.volume = 0.5;
 
-/* Pencere oluşturma */
-function createWindow(x, y, titleText = 'this is the last question, really'){
+window.addEventListener('click', function initSound() {
+  seaSound.play().catch(err => console.log('Underwater sound engellendi:', err));
+  window.removeEventListener('click', initSound);
+});
+
+function createWindow(x, y, titleText = 'this is the last question, really') {
   windowIndex++;
   const id = 'win' + windowIndex;
   const win = document.createElement('div');
   win.className = 'win98';
   win.id = id;
-  win.style.left = (x) + 'px';
-  win.style.top = (y) + 'px';
+  win.style.left = (x ?? 100) + 'px';
+  win.style.top = (y ?? 100) + 'px';
   win.style.zIndex = ++zCounter;
-
   win.innerHTML = `
-    <div class="title-bar" data-win="${id}">
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="width:14px;height:14px;background:#0b3;border-radius:2px;display:inline-block"></span>
-        <span class="title-text">${escapeHtml(titleText)}</span>
-      </div>
-      <div style="display:flex;align-items:center">
-        <div class="close-ind" title="close">✕</div>
-      </div>
+    <div class="title-bar">
+      <span>${titleText}</span>
+      <div class="close-ind">✕</div>
     </div>
     <div class="content">
-      <p>soo, are you sure you want to click this button??</p>
+      <p>so, are you sure you want to click this button?</p>
       <button class="button">yes, but</button>
     </div>
   `;
-
   document.body.appendChild(win);
 
-  // z-index üst yap on mousedown (herhangi bir yere tıklanınca üstte olsun)
-  win.addEventListener('mousedown', ()=> {
-    win.style.zIndex = ++zCounter;
-  });
+  // Dolphin sesi
+  const dolphinSound = new Audio('dolphinsound.mp3');
+  dolphinSound.volume = 0.5;
+  dolphinSound.play().catch(() => {});
 
-  // sürükleme için başlık çubuğunu al
-  const titleBar = win.querySelector('.title-bar');
-  makeDraggable(win, titleBar);
-
-  // buton davranışı
   const btn = win.querySelector('.button');
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click', () => {
     clickCount++;
-    if(clickCount < 5){
-      // her yeni pencere biraz sağa-alt, "mirror / cascade" efekti
-      createWindow(x + 30, y + 30, 'this is the last question, really');
-    } else {
-      // yönlendirme
-      window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
-    }
-    // butonu pasifleştir ama pencere DOM'da kalsın
     btn.disabled = true;
     btn.style.opacity = '0.6';
+    if (clickCount < 5) {
+      const rect = win.getBoundingClientRect();
+      createWindow(rect.left + 30, rect.top + 30);
+    } else {
+      window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
+    }
   });
 
-  // close buton sadece görsel (isteğe göre kaldırılabilir)
-  const closeInd = win.querySelector('.close-ind');
-  closeInd.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    // sadece görsel kapatma efekti verelim (opacity azalt)
-    win.style.opacity = '0.6';
-    addLog('Pencere kapatma simgesine basıldı (görsel).');
+  makeDraggable(win, win.querySelector('.title-bar'));
+
+  // Çarpı tuşu: özel hata penceresi oluştur
+  win.querySelector('.close-ind').addEventListener('click', () => {
+    createErrorWindow(win);
+  });
+}
+
+// --- Yeni: hata penceresi oluşturucu ---
+function createErrorWindow(parentWin) {
+  const err = document.createElement('div');
+  err.className = 'win98';
+  err.style.width = '300px';
+  err.style.height = '160px';
+  err.style.left = (parseInt(parentWin.style.left) + 50) + 'px';
+  err.style.top = (parseInt(parentWin.style.top) + 50) + 'px';
+  err.style.zIndex = ++zCounter;
+
+  err.innerHTML = `
+    <div class="title-bar" style="background: linear-gradient(to right, #800000, #a00000);">
+      <span>Error</span>
+      <div class="close-ind">✕</div>
+    </div>
+    <div class="content" style="display:flex;align-items:center;justify-content:center;gap:10px;">
+      <div style="font-size:40px;color:#c00;">⛔</div>
+      <div style="text-align:left;">
+        <p><b>sorry but first answer</b></p>
+        <p>the question ¯\\_(ツ)_/¯</p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(err);
+  makeDraggable(err, err.querySelector('.title-bar'));
+
+  // Çarpı butonuna basınca sadece bu hata penceresi kapanır
+  err.querySelector('.close-ind').addEventListener('click', () => {
+    err.remove();
   });
 
-  addLog('Yeni pencere açıldı: ' + id);
-  return win;
+  // küçük sistem sesi efekti (isteğe bağlı)
+  const beep = new Audio('dolphinsound.mp3');
+  beep.volume = 0.3;
+  beep.play().catch(() => {});
 }
 
-/* Basit log gösterimi (console+ekrana) */
-function addLog(msg){
-  console.log(msg);
-  // ekran logu yok, istersen ortada bir log alanı ekleyebilirim
-}
+// --- Drag delay efekti ---
+function makeDraggable(win, handle) {
+  let offsetX = 0, offsetY = 0, isDragging = false;
+  let lastTrailTime = 0;
 
-/* Sürükleme fonksiyonu (masaüstü fare için) */
-function makeDraggable(winEl, handleEl){
-  let dragging = false;
-  let startX = 0, startY = 0;
-  let origLeft = 0, origTop = 0;
+  handle.style.touchAction = "none";
 
-  // pointer events: destek varsa kullan; yoksa mouse fallback
-  handleEl.addEventListener('pointerdown', startDrag);
-  // fallback mouse (çok eski tarayıcılar)
-  handleEl.addEventListener('mousedown', startDrag);
-
-  function startDrag(e){
+  handle.addEventListener('pointerdown', (e) => {
     e.preventDefault();
-    dragging = true;
-    // bring to front
-    winEl.style.zIndex = ++zCounter;
-    // pointer position
-    const rect = winEl.getBoundingClientRect();
-    origLeft = rect.left;
-    origTop = rect.top;
-    startX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
-    startY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
-    // capture move events
-    document.addEventListener('pointermove', onMove);
-    document.addEventListener('pointerup', endDrag);
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', endDrag);
-    // prevent text selection while dragging
-    document.body.style.userSelect = 'none';
-  }
+    isDragging = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    handle.setPointerCapture(e.pointerId);
+  });
 
-  function onMove(e){
-    if(!dragging) return;
-    const clientX = (e.clientX !== undefined) ? e.clientX : (e.touches && e.touches[0].clientX);
-    const clientY = (e.clientY !== undefined) ? e.clientY : (e.touches && e.touches[0].clientY);
-    const dx = clientX - startX;
-    const dy = clientY - startY;
-    let newLeft = origLeft + dx;
-    let newTop = origTop + dy;
-    // ekran dışına fazla çıkmasını engelle (hafif)
-    const margin = 8;
-    const maxLeft = window.innerWidth - WIN_W - margin;
-    const maxTop = window.innerHeight - WIN_H - margin;
-    if(newLeft < margin) newLeft = margin;
-    if(newTop < margin) newTop = margin;
-    if(newLeft > maxLeft) newLeft = maxLeft;
-    if(newTop > maxTop) newTop = maxTop;
+  handle.addEventListener('pointerup', (e) => {
+    isDragging = false;
+    handle.releasePointerCapture(e.pointerId);
+  });
 
-    winEl.style.left = newLeft + 'px';
-    winEl.style.top = newTop + 'px';
-  }
-
-  function endDrag(){
-    dragging = false;
-    document.removeEventListener('pointermove', onMove);
-    document.removeEventListener('pointerup', endDrag);
-    document.removeEventListener('mousemove', onMove);
-    document.removeEventListener('mouseup', endDrag);
-    document.body.style.userSelect = '';
-  }
+  handle.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+    const newLeft = e.clientX - offsetX;
+    const newTop = e.clientY - offsetY;
+    const now = Date.now();
+    if (now - lastTrailTime > 100) {
+      createTrail(win, newLeft, newTop);
+      lastTrailTime = now;
+    }
+    win.style.left = newLeft + 'px';
+    win.style.top = newTop + 'px';
+  });
 }
 
-/* Başlangıç: ortalanmış ilk pencere oluştur (WIN_W/2, WIN_H/2 dikkate alındı) */
-const startX = Math.max(20, Math.round(window.innerWidth/2 - WIN_W/2));
-const startY = Math.max(20, Math.round(window.innerHeight/2 - WIN_H/2));
-createWindow(startX, startY);
+// --- İz oluşturucu ---
+function createTrail(win, left, top) {
+  const clone = win.cloneNode(true);
+  clone.style.pointerEvents = 'none';
+  clone.style.opacity = '1';
+  clone.style.zIndex = 0;
+  clone.classList.add('drag-trail');
+  clone.style.filter = 'blur(0.6px) brightness(0.95)';
+  clone.style.border = '2px solid #a0a0a0';
+  clone.style.boxShadow = '2px 2px 0 #606060, -1px -1px 0 #fff';
+  clone.style.left = left + 'px';
+  clone.style.top = top + 'px';
+  clone.style.transition = 'opacity 5s linear';
+  document.body.appendChild(clone);
+  setTimeout(() => { clone.style.opacity = '0'; }, 50);
+  setTimeout(() => { clone.remove(); }, 5000);
+}
 
+// Başlangıç
+createWindow(window.innerWidth / 2 - 150, window.innerHeight / 2 - 100);
 </script>
+
+
+
 </body>
 </html>
