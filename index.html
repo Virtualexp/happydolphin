@@ -28,7 +28,6 @@
     pointer-events: none;
   }
 
-  /* Yazı ve profil kapsayıcısı */
   .center-content {
     position: absolute;
     top: 20%;
@@ -131,41 +130,18 @@
     cursor: pointer;
   }
 
-  /* Mobil uyumluluk */
   @media (max-width: 768px) {
-    h1 {
-      font-size: 12px;
-    }
-    .profile {
-      width: 160px;
-      height: 160px;
-    }
-    .center-content {
-      top: 15%;
-      gap: 14px;
-    }
-    .win98 {
-      width: 280px;
-      height: 170px;
-    }
+    h1 { font-size: 12px; }
+    .profile { width: 160px; height: 160px; }
+    .center-content { top: 15%; gap: 14px; }
+    .win98 { width: 280px; height: 170px; }
   }
 
   @media (max-width: 480px) {
-    h1 {
-      font-size: 10px;
-    }
-    .profile {
-      width: 120px;
-      height: 120px;
-    }
-    .center-content {
-      top: 10%;
-      gap: 10px;
-    }
-    .win98 {
-      width: 240px;
-      height: 150px;
-    }
+    h1 { font-size: 10px; }
+    .profile { width: 120px; height: 120px; }
+    .center-content { top: 10%; gap: 10px; }
+    .win98 { width: 240px; height: 150px; }
   }
 </style>
 </head>
@@ -181,6 +157,7 @@
   let zCounter = 1000;
   let windowIndex = 0;
 
+  // Arkaplan sesi
   const seaSound = new Audio('underwatersound.mp3');
   seaSound.loop = true;
   seaSound.volume = 0.5;
@@ -189,6 +166,24 @@
     seaSound.play().catch(err => console.log('Underwater sound engellendi:', err));
     window.removeEventListener('click', initSound);
   });
+
+  // Basit beep efekti (retro tarz)
+  function beep(frequency = 600, duration = 150) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "square";
+      osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + duration / 1000);
+    } catch (e) {
+      console.log("Beep desteklenmiyor:", e);
+    }
+  }
 
   function createWindow(x, y, titleText = 'this is the last question, really') {
     windowIndex++;
@@ -210,6 +205,22 @@
       </div>
     `;
     document.body.appendChild(win);
+    // ✕ butonu: drag'i engelle + uyarı ver
+const closeBtn = win.querySelector('.close-ind');
+
+// Drag'a yakalanmaması için pointerdown'ı durdur
+closeBtn.addEventListener('pointerdown', (e) => {
+  e.stopPropagation();
+});
+
+// Asıl aksiyon
+closeBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  beep(440, 200);          // varsa senin beep fonksiyonun
+  setTimeout(() => {
+    alert("sorry but please answer the question ¯\\_(ツ)_/¯");
+  }, 120);
+});
 
     const dolphinSound = new Audio('dolphinsound.mp3');
     dolphinSound.volume = 0.5;
@@ -229,64 +240,17 @@
     });
 
     makeDraggable(win, win.querySelector('.title-bar'));
-    win.querySelector('.close-ind').addEventListener('click', () => createErrorWindow(win));
-  }
 
-  function createErrorWindow() {
-    const err = document.createElement('div');
-    err.style.position = 'fixed';
-    err.style.left = '50%';
-    err.style.top = '50%';
-    err.style.transform = 'translate(-50%, -50%)';
-    err.style.width = '300px';
-    err.style.height = '150px';
-    err.style.background = '#c0c0c0';
-    err.style.border = '2px solid #808080';
-    err.style.boxShadow = '3px 3px 0 #404040, -1px -1px 0 #fff';
-    err.style.zIndex = '99999';
-    err.style.fontFamily = '"MS Sans Serif", sans-serif';
-    err.innerHTML = `
-      <div style="
-        background: linear-gradient(to right, #800000, #a00000);
-        color: white;
-        padding: 4px 6px;
-        font-weight: bold;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 2px solid #000;
-      ">
-        <span>Error</span>
-        <div id="errClose" style="
-          width:20px;height:18px;text-align:center;line-height:18px;
-          background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;">✕</div>
-      </div>
-      <div style="
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        gap:10px;
-        height:calc(100% - 40px);
-        background-color:#d4d0c8;
-        text-align:left;
-      ">
-        <div style="font-size:36px;color:#c00;">⛔</div>
-        <div>
-          <p><b>sorry but first answer</b></p>
-          <p>the question ¯\\_(ツ)_/¯</p>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(err);
-    err.querySelector('#errClose').addEventListener('click', () => err.remove());
-    try {
-      const beep = new Audio('dolphinsound.mp3');
-      beep.volume = 0.3;
-      beep.play();
-    } catch (e) {
-      console.log('Ses çalınamadı:', e);
-    }
+    // Çarpı tuşuna tıklandığında: beep + alert
+    setTimeout(() => {
+      const closeBtn = win.querySelector('.close-ind');
+      closeBtn.addEventListener('click', () => {
+        beep(440, 200);
+        setTimeout(() => {
+          alert("sorry but please answer the question ¯\\_(ツ)_/¯");
+        }, 120);
+      });
+    }, 100);
   }
 
   function makeDraggable(win, handle) {
@@ -325,7 +289,6 @@
     clone.style.pointerEvents = 'none';
     clone.style.opacity = '1';
     clone.style.zIndex = 0;
-    clone.classList.add('drag-trail');
     clone.style.filter = 'blur(0.6px) brightness(0.95)';
     clone.style.border = '2px solid #a0a0a0';
     clone.style.boxShadow = '2px 2px 0 #606060, -1px -1px 0 #fff';
@@ -337,7 +300,6 @@
     setTimeout(() => { clone.remove(); }, 5000);
   }
 
-  // Pencereyi tam merkeze yerleştir
   function centerWindow() {
     const winWidth = window.innerWidth < 480 ? 240 :
                      window.innerWidth < 768 ? 280 : 350;
