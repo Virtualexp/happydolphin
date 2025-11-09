@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="tr">
-
 <head>
-
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>welcome!</title>
 
 <style>
@@ -22,6 +18,7 @@
     margin: 0;
     overflow: hidden;
   }
+
   body::after {
     content: "";
     position: fixed;
@@ -30,35 +27,40 @@
     background-color: rgba(0, 0, 25, 0.3);
     pointer-events: none;
   }
-  h1 {
+
+  /* Yazı ve profil kapsayıcısı */
+  .center-content {
+    position: absolute;
+    top: 20%; /* biraz yukarı taşıdık */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
     text-align: center;
-    margin-top: 20px;
-    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
-    font-family: 'VT323', monospace;
-    font-size: 42px;
-    letter-spacing: 2px;
-    animation: flicker 1.6s infinite alternate;
   }
 
-@keyframes flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-    opacity: 1;
+  h1 {
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    font-size: 18px;
+    color: #0f0;
+    text-shadow: 0 0 8px #0f0;
+    margin: 0;
   }
-  20%, 24%, 55% {
-    opacity: 0.3;
-  }
-}
+
   .profile {
     width: 240px;
     height: 240px;
     border: 3px solid #00ff00;
     border-radius: 50%;
-    margin: 20px auto;
     background-image: url('dolphin.jpg');
     background-size: cover;
     background-position: center;
     box-shadow: 0 0 20px #00ff00;
   }
+
   .win98 {
     position: absolute;
     width: 350px;
@@ -67,18 +69,13 @@
     color: black;
     font-family: "MS Sans Serif", sans-serif;
     user-select: none;
-
-    /* Gerçek Win98 çerçevesi: iç ve dış kenar 3D efekti */
     border-top: 2px solid #ffffff;
     border-left: 2px solid #ffffff;
     border-right: 2px solid #808080;
     border-bottom: 2px solid #808080;
-
-    /* Hafif dış gölge: tam hizalı */
     box-shadow:
-      1px 1px 0 #404040,     /* sağ-alt koyu gölge */
-      -1px -1px 0 #d4d0c8;   /* sol-üst açık yansıma */
-
+      1px 1px 0 #404040,
+      -1px -1px 0 #d4d0c8;
     border-radius: 2px;
   }
 
@@ -92,13 +89,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-top: 2px solid #ffffff;     /* üst kenar parlak */
+    border-top: 2px solid #ffffff;
     border-left: 2px solid #ffffff;
-    border-bottom: 2px solid #000000;  /* alt kenar koyu */
+    border-bottom: 2px solid #000000;
     border-right: 2px solid #000000;
   }
-    .content {
-    padding: 28px 26px 26px 26px; /* alt kısım hafif azaltıldı */
+
+  .content {
+    padding: 28px 26px 26px 26px;
     background-color: #d4d0c8;
     text-align: center;
     border-top: 2px solid #808080;
@@ -106,6 +104,7 @@
     border-right: 2px solid #ffffff;
     border-bottom: 2px solid #ffffff;
   }
+
   .button {
     margin-top: 15px;
     background-color: #d4d0c8;
@@ -113,217 +112,203 @@
     padding: 6px 14px;
     cursor: pointer;
     font-size: 14px;
-    font-weight:700;
+    font-weight: 700;
   }
+
   .button:active { border: 2px inset #fff; }
+
   .close-ind {
-    width:20px;height:18px;border-radius:2px;background:rgba(255,255,255,0.12);
-    text-align:center;line-height:18px;font-weight:700;
-    margin-left:8px;color:#fff;font-size:12px;cursor:pointer;
+    width: 20px;
+    height: 18px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.12);
+    text-align: center;
+    line-height: 18px;
+    font-weight: 700;
+    margin-left: 8px;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
   }
-  @media (max-width:640px){ .win98{width:88%;left:6% !important} }
+
+  @media (max-width:640px){
+    .win98 { width:88%; left:6% !important; }
+  }
 </style>
 </head>
 
 <body>
-<h1>totaly not a virus, trust me..</h1>
-<div class="profile"></div>
+  <div class="center-content">
+    <h1>totaly not a virus, trust me..</h1>
+    <div class="profile"></div>
+  </div>
 
-<script>
-let clickCount = 0;
-let zCounter = 1000;
-let windowIndex = 0;
+  <script>
+  let clickCount = 0;
+  let zCounter = 1000;
+  let windowIndex = 0;
 
-// Arkaplan deniz sesi
-const seaSound = new Audio('underwatersound.mp3');
-seaSound.loop = true;
-seaSound.volume = 0.5;
+  const seaSound = new Audio('underwatersound.mp3');
+  seaSound.loop = true;
+  seaSound.volume = 0.5;
 
-window.addEventListener('click', function initSound() {
-  seaSound.play().catch(err => console.log('Underwater sound engellendi:', err));
-  window.removeEventListener('click', initSound);
-});
-
-function createWindow(x, y, titleText = 'this is the last question, really') {
-  windowIndex++;
-  const id = 'win' + windowIndex;
-  const win = document.createElement('div');
-  win.className = 'win98';
-  win.id = id;
-  win.style.left = (x ?? 100) + 'px';
-  win.style.top = (y ?? 100) + 'px';
-  win.style.zIndex = ++zCounter;
-  win.innerHTML = `
-    <div class="title-bar">
-      <span>${titleText}</span>
-      <div class="close-ind">✕</div>
-    </div>
-    <div class="content">
-      <p>so, are you sure you want to click this button?</p>
-      <button class="button">yes, but</button>
-    </div>
-  `;
-  document.body.appendChild(win);
-
-  // Dolphin sesi
-  const dolphinSound = new Audio('dolphinsound.mp3');
-  dolphinSound.volume = 0.5;
-  dolphinSound.play().catch(() => {});
-
-  const btn = win.querySelector('.button');
-  btn.addEventListener('click', () => {
-    clickCount++;
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
-    if (clickCount < 5) {
-      const rect = win.getBoundingClientRect();
-      createWindow(rect.left + 30, rect.top + 30);
-    } else {
-      window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
-    }
+  window.addEventListener('click', function initSound() {
+    seaSound.play().catch(err => console.log('Underwater sound engellendi:', err));
+    window.removeEventListener('click', initSound);
   });
 
-  makeDraggable(win, win.querySelector('.title-bar'));
-
-  // Çarpı tuşu: özel hata penceresi oluştur
-  win.querySelector('.close-ind').addEventListener('click', () => {
-    createErrorWindow(win);
-  });
-}
-
-// --- Hata penceresi oluşturucu (minimal, %100 çalışan sürüm) ---
-function createErrorWindow() {
-  // Önce konsola yaz, fonksiyon çalışıyor mu görelim
-  console.log("Creating error window...");
-
-  // Error penceresi elementi
-  const err = document.createElement('div');
-  err.style.position = 'fixed'; // ekran ortasında sabit
-  err.style.left = '50%';
-  err.style.top = '50%';
-  err.style.transform = 'translate(-50%, -50%)';
-  err.style.width = '300px';
-  err.style.height = '150px';
-  err.style.background = '#c0c0c0';
-  err.style.border = '2px solid #808080';
-  err.style.boxShadow = '3px 3px 0 #404040, -1px -1px 0 #fff';
-  err.style.zIndex = '99999';
-  err.style.fontFamily = '"MS Sans Serif", sans-serif';
-
-  err.innerHTML = `
-    <div style="
-      background: linear-gradient(to right, #800000, #a00000);
-      color: white;
-      padding: 4px 6px;
-      font-weight: bold;
-      font-size: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #000;
-    ">
-      <span>Error</span>
-      <div id="errClose" style="
-        width:20px;height:18px;text-align:center;line-height:18px;
-        background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;">✕</div>
-    </div>
-    <div style="
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      height:calc(100% - 40px);
-      background-color:#d4d0c8;
-      text-align:left;
-      ">
-      <div style="font-size:36px;color:#c00;">⛔</div>
-      <div>
-        <p><b>sorry but first answer</b></p>
-        <p>the question ¯\\_(ツ)_/¯</p>
+  function createWindow(x, y, titleText = 'this is the last question, really') {
+    windowIndex++;
+    const id = 'win' + windowIndex;
+    const win = document.createElement('div');
+    win.className = 'win98';
+    win.id = id;
+    win.style.left = (x ?? 100) + 'px';
+    win.style.top = (y ?? 100) + 'px';
+    win.style.zIndex = ++zCounter;
+    win.innerHTML = `
+      <div class="title-bar">
+        <span>${titleText}</span>
+        <div class="close-ind">✕</div>
       </div>
-    </div>
-  `;
+      <div class="content">
+        <p>so, are you sure you want to click this button?</p>
+        <button class="button">yes, but</button>
+      </div>
+    `;
+    document.body.appendChild(win);
 
-  document.body.appendChild(err);
+    const dolphinSound = new Audio('dolphinsound.mp3');
+    dolphinSound.volume = 0.5;
+    dolphinSound.play().catch(() => {});
 
-  // Kapatma butonu
-  const closeBtn = err.querySelector('#errClose');
-  closeBtn.addEventListener('click', () => {
-    err.remove();
-  });
+    const btn = win.querySelector('.button');
+    btn.addEventListener('click', () => {
+      clickCount++;
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      if (clickCount < 5) {
+        const rect = win.getBoundingClientRect();
+        createWindow(rect.left + 30, rect.top + 30);
+      } else {
+        window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
+      }
+    });
 
-  // Ses (isteğe bağlı)
-  try {
-    const beep = new Audio('dolphinsound.mp3');
-    beep.volume = 0.3;
-    beep.play();
-  } catch (e) {
-    console.log('Ses çalınamadı:', e);
+    makeDraggable(win, win.querySelector('.title-bar'));
+    win.querySelector('.close-ind').addEventListener('click', () => createErrorWindow(win));
   }
 
-  console.log("Error window created!");
-}
-
-
-
-
-// --- Drag delay efekti ---
-function makeDraggable(win, handle) {
-  let offsetX = 0, offsetY = 0, isDragging = false;
-  let lastTrailTime = 0;
-
-  handle.style.touchAction = "none";
-
-  handle.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    isDragging = true;
-    offsetX = e.clientX - win.offsetLeft;
-    offsetY = e.clientY - win.offsetTop;
-    handle.setPointerCapture(e.pointerId);
-  });
-
-  handle.addEventListener('pointerup', (e) => {
-    isDragging = false;
-    handle.releasePointerCapture(e.pointerId);
-  });
-
-  handle.addEventListener('pointermove', (e) => {
-    if (!isDragging) return;
-    const newLeft = e.clientX - offsetX;
-    const newTop = e.clientY - offsetY;
-    const now = Date.now();
-    if (now - lastTrailTime > 100) {
-      createTrail(win, newLeft, newTop);
-      lastTrailTime = now;
+  function createErrorWindow() {
+    const err = document.createElement('div');
+    err.style.position = 'fixed';
+    err.style.left = '50%';
+    err.style.top = '50%';
+    err.style.transform = 'translate(-50%, -50%)';
+    err.style.width = '300px';
+    err.style.height = '150px';
+    err.style.background = '#c0c0c0';
+    err.style.border = '2px solid #808080';
+    err.style.boxShadow = '3px 3px 0 #404040, -1px -1px 0 #fff';
+    err.style.zIndex = '99999';
+    err.style.fontFamily = '"MS Sans Serif", sans-serif';
+    err.innerHTML = `
+      <div style="
+        background: linear-gradient(to right, #800000, #a00000);
+        color: white;
+        padding: 4px 6px;
+        font-weight: bold;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #000;
+      ">
+        <span>Error</span>
+        <div id="errClose" style="
+          width:20px;height:18px;text-align:center;line-height:18px;
+          background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;">✕</div>
+      </div>
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        height:calc(100% - 40px);
+        background-color:#d4d0c8;
+        text-align:left;
+      ">
+        <div style="font-size:36px;color:#c00;">⛔</div>
+        <div>
+          <p><b>sorry but first answer</b></p>
+          <p>the question ¯\\_(ツ)_/¯</p>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(err);
+    err.querySelector('#errClose').addEventListener('click', () => err.remove());
+    try {
+      const beep = new Audio('dolphinsound.mp3');
+      beep.volume = 0.3;
+      beep.play();
+    } catch (e) {
+      console.log('Ses çalınamadı:', e);
     }
-    win.style.left = newLeft + 'px';
-    win.style.top = newTop + 'px';
-  });
-}
+  }
 
-// --- İz oluşturucu ---
-function createTrail(win, left, top) {
-  const clone = win.cloneNode(true);
-  clone.style.pointerEvents = 'none';
-  clone.style.opacity = '1';
-  clone.style.zIndex = 0;
-  clone.classList.add('drag-trail');
-  clone.style.filter = 'blur(0.6px) brightness(0.95)';
-  clone.style.border = '2px solid #a0a0a0';
-  clone.style.boxShadow = '2px 2px 0 #606060, -1px -1px 0 #fff';
-  clone.style.left = left + 'px';
-  clone.style.top = top + 'px';
-  clone.style.transition = 'opacity 5s linear';
-  document.body.appendChild(clone);
-  setTimeout(() => { clone.style.opacity = '0'; }, 50);
-  setTimeout(() => { clone.remove(); }, 5000);
-}
+  function makeDraggable(win, handle) {
+    let offsetX = 0, offsetY = 0, isDragging = false, lastTrailTime = 0;
+    handle.style.touchAction = "none";
 
-// Başlangıç
-createWindow(window.innerWidth / 2 - 150, window.innerHeight / 2 - 100);
-</script>
+    handle.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      isDragging = true;
+      offsetX = e.clientX - win.offsetLeft;
+      offsetY = e.clientY - win.offsetTop;
+      handle.setPointerCapture(e.pointerId);
+    });
 
+    handle.addEventListener('pointerup', (e) => {
+      isDragging = false;
+      handle.releasePointerCapture(e.pointerId);
+    });
 
+    handle.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const newLeft = e.clientX - offsetX;
+      const newTop = e.clientY - offsetY;
+      const now = Date.now();
+      if (now - lastTrailTime > 100) {
+        createTrail(win, newLeft, newTop);
+        lastTrailTime = now;
+      }
+      win.style.left = newLeft + 'px';
+      win.style.top = newTop + 'px';
+    });
+  }
 
+  function createTrail(win, left, top) {
+    const clone = win.cloneNode(true);
+    clone.style.pointerEvents = 'none';
+    clone.style.opacity = '1';
+    clone.style.zIndex = 0;
+    clone.classList.add('drag-trail');
+    clone.style.filter = 'blur(0.6px) brightness(0.95)';
+    clone.style.border = '2px solid #a0a0a0';
+    clone.style.boxShadow = '2px 2px 0 #606060, -1px -1px 0 #fff';
+    clone.style.left = left + 'px';
+    clone.style.top = top + 'px';
+    clone.style.transition = 'opacity 5s linear';
+    document.body.appendChild(clone);
+    setTimeout(() => { clone.style.opacity = '0'; }, 50);
+    setTimeout(() => { clone.remove(); }, 5000);
+  }
+
+  // Pencereyi tam merkeze yerleştir
+  createWindow(
+    (window.innerWidth - 350) / 2,
+    (window.innerHeight - 200) / 2
+  );
+  </script>
 </body>
 </html>
