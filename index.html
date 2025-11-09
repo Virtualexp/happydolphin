@@ -1,9 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="tr">
+
 <head>
+
 <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>welcome!</title>
+
 <style>
   body {
     background-image: url('waves.jpg');
@@ -27,8 +33,21 @@
   h1 {
     text-align: center;
     margin-top: 20px;
-    text-shadow: 0 0 5px #0f0;
+    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0;
+    font-family: 'VT323', monospace;
+    font-size: 42px;
+    letter-spacing: 2px;
+    animation: flicker 1.6s infinite alternate;
   }
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.3;
+  }
+}
   .profile {
     width: 240px;
     height: 240px;
@@ -105,6 +124,7 @@
   @media (max-width:640px){ .win98{width:88%;left:6% !important} }
 </style>
 </head>
+
 <body>
 <h1>totaly not a virus, trust me..</h1>
 <div class="profile"></div>
@@ -171,42 +191,81 @@ function createWindow(x, y, titleText = 'this is the last question, really') {
   });
 }
 
-// --- Yeni: hata penceresi oluşturucu ---
-function createErrorWindow(parentWin) {
+// --- Hata penceresi oluşturucu (minimal, %100 çalışan sürüm) ---
+function createErrorWindow() {
+  // Önce konsola yaz, fonksiyon çalışıyor mu görelim
+  console.log("Creating error window...");
+
+  // Error penceresi elementi
   const err = document.createElement('div');
-  err.className = 'win98';
+  err.style.position = 'fixed'; // ekran ortasında sabit
+  err.style.left = '50%';
+  err.style.top = '50%';
+  err.style.transform = 'translate(-50%, -50%)';
   err.style.width = '300px';
-  err.style.height = '160px';
-  err.style.left = (parseInt(parentWin.style.left) + 50) + 'px';
-  err.style.top = (parseInt(parentWin.style.top) + 50) + 'px';
-  err.style.zIndex = ++zCounter;
+  err.style.height = '150px';
+  err.style.background = '#c0c0c0';
+  err.style.border = '2px solid #808080';
+  err.style.boxShadow = '3px 3px 0 #404040, -1px -1px 0 #fff';
+  err.style.zIndex = '99999';
+  err.style.fontFamily = '"MS Sans Serif", sans-serif';
 
   err.innerHTML = `
-    <div class="title-bar" style="background: linear-gradient(to right, #800000, #a00000);">
+    <div style="
+      background: linear-gradient(to right, #800000, #a00000);
+      color: white;
+      padding: 4px 6px;
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #000;
+    ">
       <span>Error</span>
-      <div class="close-ind">✕</div>
+      <div id="errClose" style="
+        width:20px;height:18px;text-align:center;line-height:18px;
+        background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;">✕</div>
     </div>
-    <div class="content" style="display:flex;align-items:center;justify-content:center;gap:10px;">
-      <div style="font-size:40px;color:#c00;">⛔</div>
-      <div style="text-align:left;">
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      height:calc(100% - 40px);
+      background-color:#d4d0c8;
+      text-align:left;
+      ">
+      <div style="font-size:36px;color:#c00;">⛔</div>
+      <div>
         <p><b>sorry but first answer</b></p>
         <p>the question ¯\\_(ツ)_/¯</p>
       </div>
     </div>
   `;
-  document.body.appendChild(err);
-  makeDraggable(err, err.querySelector('.title-bar'));
 
-  // Çarpı butonuna basınca sadece bu hata penceresi kapanır
-  err.querySelector('.close-ind').addEventListener('click', () => {
+  document.body.appendChild(err);
+
+  // Kapatma butonu
+  const closeBtn = err.querySelector('#errClose');
+  closeBtn.addEventListener('click', () => {
     err.remove();
   });
 
-  // küçük sistem sesi efekti (isteğe bağlı)
-  const beep = new Audio('dolphinsound.mp3');
-  beep.volume = 0.3;
-  beep.play().catch(() => {});
+  // Ses (isteğe bağlı)
+  try {
+    const beep = new Audio('dolphinsound.mp3');
+    beep.volume = 0.3;
+    beep.play();
+  } catch (e) {
+    console.log('Ses çalınamadı:', e);
+  }
+
+  console.log("Error window created!");
 }
+
+
+
 
 // --- Drag delay efekti ---
 function makeDraggable(win, handle) {
