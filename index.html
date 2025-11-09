@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>welcome!</title>
 
@@ -12,8 +12,8 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    color: #00ff00;
-    font-family: "Lucida Console", monospace;
+    color: #40FFB0;
+    font-family: "VT323", monospace;
     height: 100vh;
     margin: 0;
     overflow: hidden;
@@ -24,8 +24,23 @@
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background-color: rgba(0, 0, 25, 0.3);
+    background-color: rgba(0, 0, 20, 0.35);
     pointer-events: none;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(64, 255, 176, 0.05),
+      rgba(64, 255, 176, 0.05) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+    pointer-events: none;
+    mix-blend-mode: overlay;
   }
 
   .center-content {
@@ -43,36 +58,37 @@
   h1 {
     position: relative;
     top: -40px;
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'VT323', monospace;
     text-transform: uppercase;
-    font-size: 26px;
-    color: #0f0;
-    text-shadow: 0 0 8px #0f0;
+    font-size: 48px;
+    color: #7CFFB2;
+    text-shadow: 0 0 8px #40FFB0, 0 0 15px rgba(64,255,176,0.5);
     margin: 0;
+    letter-spacing: 2px;
   }
 
   .profile {
     width: 240px;
     height: 240px;
-    border: 3px solid #00ff00;
+    border: 2px solid #40FFB0;
     border-radius: 50%;
     background-image: url('dolphin.jpg');
     background-size: cover;
     background-position: center;
-    box-shadow: 0 0 20px #00ff00;
+    box-shadow: 0 0 25px #40FFB0;
   }
 
-  /* --- Windows 98 Penceresi (genişletilmiş ve ölçekli içerik) --- */
   .win98 {
     position: absolute;
-    background-color: #c0c0c0;
     width: 320px;
     height: 190px;
+    background-color: #c0c0c0;
     color: black;
     font-family: "MS Sans Serif", sans-serif;
-    border: 2px solid #000;
-    box-shadow: inset -2px -2px #808080, inset 2px 2px #ffffff;
+    border: none;
+    box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080, 1px 1px 0 #404040;
     user-select: none;
+    transition: opacity 0.2s ease-out;
   }
 
   .title-bar {
@@ -85,8 +101,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid #808080;
-    box-shadow: inset -1px -1px #000, inset 1px 1px #fff;
+    box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #000000;
   }
 
   .close-ind {
@@ -102,10 +117,7 @@
     font-weight: bold;
     cursor: pointer;
     margin-left: 6px;
-  }
-
-  .close-ind:active {
-    box-shadow: inset 1px 1px #fff, inset -1px -1px #404040;
+    flex-shrink: 0;
   }
 
   .content {
@@ -129,15 +141,15 @@
   }
 
   .message-icon {
-    width: 52px;  /* %20 büyütüldü */
-    height: 52px;
+    width: 66px;
+    height: 66px;
     image-rendering: pixelated;
   }
 
   .message-text {
     text-align: left;
     line-height: 1.6;
-    font-size: 18px;  /* yazı boyutu büyütüldü */
+    font-size: 24px;
     font-weight: 500;
   }
 
@@ -156,13 +168,60 @@
     font-size: 14px;
   }
 
-  .button:active {
-    box-shadow: inset 1px 1px #fff, inset -1px -1px #404040;
+  .trail {
+    position: absolute;
+    pointer-events: none;
+    opacity: 1;
+    filter: none;
+    transition: opacity 0.3s linear;
   }
 
-  @media (max-width: 768px) {
-    h1 { font-size: 12px; top: -25px; }
-    .profile { width: 160px; height: 160px; }
+  /* === MOBİL UYUMLULUK === */
+  @media (max-width: 640px) {
+    body {
+      background-size: cover;
+      overflow: auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      top: 0;
+      padding: 10px;
+    }
+
+    .profile {
+      width: 140px;
+      height: 140px;
+    }
+
+    .win98 {
+      width: 90vw;
+      height: auto;
+      left: 5vw !important;
+      top: 10vh !important;
+    }
+
+    .message-text {
+      font-size: 18px;
+    }
+
+    .button {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+
+    .cmd-input {
+      font-size: 16px !important;
+    }
+
+    .center-content {
+      top: 10%;
+      gap: 10px;
+    }
+
+    .trail {
+      opacity: 0.6;
+    }
   }
 </style>
 </head>
@@ -177,13 +236,18 @@
 let clickCount = 0;
 let zCounter = 1000;
 let windowIndex = 0;
+const MAX_WINDOWS = 7;
+const OFFSET_X = 30;
+const OFFSET_Y = 30;
 
 const seaSound = new Audio('underwatersound.mp3');
 seaSound.loop = true;
 seaSound.volume = 0.5;
+const dolphinSound = new Audio('dolphinsound.mp3');
+dolphinSound.volume = 0.5;
 
 window.addEventListener('click', function initSound() {
-  seaSound.play().catch(err => console.log('Underwater sound engellendi:', err));
+  seaSound.play().catch(()=>{});
   window.removeEventListener('click', initSound);
 });
 
@@ -192,118 +256,223 @@ const messages = [
   "hmm... interesting choice.",
   "you really thought this was the last one?",
   "don’t trust the dolphin.",
-  "one click closer to enlightenment.",
-  "why do you keep clicking?",
   "the ocean is watching.",
-  "this might be a bad idea.",
   "trust issues detected.",
   "maybe... stop?",
   "i’m starting to think you like chaos."
 ];
-
 const titles = [
-  "System Warning",
-  "AreYouSure.exe",
-  "Critical Question",
-  "Deep Sea Protocol",
-  "dolphinOS Alert",
-  "User Error",
-  "Access Denied",
-  "Mystery Box",
-  "Ocean.exe",
-  "Final Question"
+  "System Warning", "Deep Sea Protocol",
+  "Critical Question", "User Error",
+  "Ocean.exe", "dolphinOS Alert"
 ];
 
 function createWindow(x, y) {
   windowIndex++;
-  const id = 'win' + windowIndex;
   const win = document.createElement('div');
   win.className = 'win98';
-  win.id = id;
   win.style.left = (x ?? 100) + 'px';
   win.style.top = (y ?? 100) + 'px';
   win.style.zIndex = ++zCounter;
+  win.style.touchAction = "none";
 
   const randomMessage = messages[Math.floor(Math.random() * messages.length)];
   const randomTitle = titles[Math.floor(Math.random() * titles.length)];
 
-  win.innerHTML = `
-    <div class="title-bar">
-      <span>${randomTitle}</span>
-      <div class="close-ind">X</div>
-    </div>
-    <div class="content">
-      <div class="message">
-        <img src="dolphinmini.png" class="message-icon" alt="icon">
-        <div class="message-text">${randomMessage}</div>
-      </div>
-      <div class="button-container">
-        <button class="button">Yes, but</button>
-      </div>
-    </div>
-  `;
+  // 🎲 Olasılık sistemi (%10 terminal, %5 kaçan pencere)
+  const chance = Math.random();
+  let mode = "normal";
+  if (chance < 0.10) mode = "terminal";
+  else if (chance < 0.15) mode = "runaway";
 
+  let innerHTML = '';
+
+  if (mode === "terminal") {
+    innerHTML = `
+      <div class="title-bar">
+        <span>${randomTitle} [terminal mode]</span>
+        <div class="close-ind">X</div>
+      </div>
+      <div class="content">
+        <div class="message-text">> access marine archive...</div>
+        <input type="text" class="cmd-input" placeholder="type command..." style="
+          width:100%;margin-top:10px;background:#000;color:#40FFB0;
+          font-family:'VT323', monospace;font-size:20px;padding:4px;
+          border:none;outline:none;">
+        <div class="button-container">
+          <button class="button">Execute</button>
+        </div>
+      </div>
+    `;
+  } else {
+    innerHTML = `
+      <div class="title-bar">
+        <span>${randomTitle}</span>
+        <div class="close-ind">X</div>
+      </div>
+      <div class="content">
+        <div class="message">
+          <img src="dolphinmini.png" class="message-icon" alt="icon">
+          <div class="message-text">${randomMessage}</div>
+        </div>
+        <div class="button-container">
+          <button class="button">Yes, but</button>
+        </div>
+      </div>
+    `;
+  }
+
+  win.innerHTML = innerHTML;
   document.body.appendChild(win);
 
   const closeBtn = win.querySelector('.close-ind');
   closeBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    createErrorWindow();
+    alert("sorry but answer the question first ¯\\_(ツ)_/¯");
   });
 
-  const dolphinSound = new Audio('dolphinsound.mp3');
-  dolphinSound.volume = 0.5;
-  dolphinSound.play().catch(() => {});
+  dolphinSound.currentTime = 0;
+  dolphinSound.play().catch(()=>{});
+
+  // === Easter Egg #5: Terminal davranışı (felsefi random + typing efekti) ===
+  const input = win.querySelector('.cmd-input');
+  if (input) {
+    const executeBtn = win.querySelector('.button');
+    const output = win.querySelector('.message-text');
+    let awaitingAnswer = true;
+
+    const questions = [
+      {
+        q: "do you think reality cares about you?",
+        yes: "> then you’ve mistaken coincidence for affection.",
+        no:  "> reality doesn’t care, and that’s freedom."
+      },
+      {
+        q: "would you erase your memories if you could?",
+        yes: "> and lose what made you you?",
+        no:  "> so you choose the weight over the void."
+      },
+      {
+        q: "is the truth worth the pain?",
+        yes: "> brave. but truth doesn't love you back.",
+        no:  "> then maybe illusion is your chosen oxygen."
+      },
+      {
+        q: "if no one remembers you, do you still exist?",
+        yes: "> memories are waves. they fade, but the ocean stays.",
+        no:  "> then perhaps you never did."
+      }
+    ];
+
+    const chosen = questions[Math.floor(Math.random() * questions.length)];
+
+    function typeText(element, text, delay = 25, callback) {
+      element.textContent = '';
+      let i = 0;
+      const interval = setInterval(() => {
+        element.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          if (callback) callback();
+        }
+      }, delay);
+    }
+
+    typeText(output, `> ${chosen.q}`);
+
+    executeBtn.addEventListener('click', runCommand);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') runCommand();
+    });
+
+    function runCommand() {
+      const cmd = input.value.trim().toLowerCase();
+      input.value = '';
+
+      if (awaitingAnswer) {
+        if (cmd === 'yes' || cmd === 'no') {
+          input.style.display = 'none';
+          executeBtn.style.display = 'none';
+          awaitingAnswer = false;
+
+          typeText(output, chosen[cmd], 30);
+
+          if (Math.random() < 0.5) {
+            for (let i = 0; i < 7; i++) {
+              setTimeout(() => {
+                const s = dolphinSound.cloneNode();
+                s.volume = 0.4 - i * 0.05;
+                s.play().catch(()=>{});
+              }, i * 400);
+            }
+          }
+
+          const reset = Math.random() < 0.5;
+          setTimeout(() => {
+            if (reset) {
+              document.querySelectorAll('.win98').forEach(el => el.remove());
+              clickCount = 0;
+              centerWindow();
+            } else {
+              win.remove();
+            }
+          }, 3000);
+        } else {
+          output.textContent = "> answer with 'yes' or 'no'.";
+        }
+      }
+    }
+  }
+
+  // === Easter Egg #6: Kaçan pencere ===
+  if (mode === "runaway") {
+    const button = win.querySelector('.button');
+    if (button) {
+      win.style.transition = 'left 0.25s ease-out, top 0.25s ease-out';
+      win.addEventListener('mousemove', (e) => {
+        const rect = button.getBoundingClientRect();
+        const dist = Math.hypot(e.clientX - (rect.left + rect.width / 2), e.clientY - (rect.top + rect.height / 2));
+        if (dist < 80) {
+          let newLeft = parseInt(win.style.left) + (Math.random() * 100 - 50);
+          let newTop = parseInt(win.style.top) + (Math.random() * 100 - 50);
+          newLeft = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newLeft));
+          newTop = Math.max(0, Math.min(window.innerHeight - win.offsetHeight, newTop));
+          win.style.left = newLeft + 'px';
+          win.style.top = newTop + 'px';
+        }
+      });
+    }
+  }
 
   const btn = win.querySelector('.button');
-  btn.addEventListener('click', () => {
-    clickCount++;
-    btn.disabled = true;
-    btn.style.opacity = '0.6';
-    if (clickCount < 5) {
+  if (btn && mode === "normal") {
+    btn.addEventListener('click', () => {
+      clickCount++;
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
       const rect = win.getBoundingClientRect();
-      createWindow(rect.left + 30, rect.top + 30);
-    } else {
-      window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
-    }
-  });
+      win.remove();
+      if (clickCount < MAX_WINDOWS) {
+        createWindow(rect.left + OFFSET_X, rect.top + OFFSET_Y);
+      } else {
+        window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
+      }
+    });
+  }
 
-  makeDraggable(win, win.querySelector('.title-bar'));
+  makeDraggable(win, win.querySelector('.title-bar'), closeBtn);
 }
 
-function createErrorWindow() {
-  const err = document.createElement('div');
-  err.className = 'win98';
-  err.style.width = '300px';
-  err.style.height = '150px';
-  err.style.left = '50%';
-  err.style.top = '50%';
-  err.style.transform = 'translate(-50%, -50%)';
-  err.style.zIndex = ++zCounter + 1000;
-
-  err.innerHTML = `
-    <div class="title-bar" style="background: linear-gradient(to right, #800000, #a00000);">
-      <span>Error</span>
-      <div class="close-ind">X</div>
-    </div>
-    <div class="content" style="display:flex;align-items:center;justify-content:center;gap:10px;">
-      <div style="font-size:32px;">⛔</div>
-      <div style="font-size:15px;line-height:1.4;">
-        <b>Sorry but please answer</b><br>the question ¯\\_(ツ)_/¯
-      </div>
-    </div>
-  `;
-  document.body.appendChild(err);
-
-  const close = err.querySelector('.close-ind');
-  close.addEventListener('click', () => err.remove());
-}
-
-function makeDraggable(win, handle) {
+/* === Sürükleme + lag efekti === */
+function makeDraggable(win, handle, closeBtn) {
   let offsetX = 0, offsetY = 0, isDragging = false;
+  let lastTrail = 0;
   handle.style.touchAction = "none";
+  win.style.touchAction = "none";
 
-  handle.addEventListener('pointerdown', (e) => {
+  handle.addEventListener('pointerdown', e => {
+    if (e.target === closeBtn) return;
     e.preventDefault();
     isDragging = true;
     offsetX = e.clientX - win.offsetLeft;
@@ -311,27 +480,37 @@ function makeDraggable(win, handle) {
     handle.setPointerCapture(e.pointerId);
   });
 
-  handle.addEventListener('pointerup', (e) => {
+  handle.addEventListener('pointerup', e => {
     isDragging = false;
     handle.releasePointerCapture(e.pointerId);
   });
 
-  handle.addEventListener('pointermove', (e) => {
+  handle.addEventListener('pointermove', e => {
     if (!isDragging) return;
-    win.style.left = e.clientX - offsetX + 'px';
-    win.style.top = e.clientY - offsetY + 'px';
+    const x = e.clientX - offsetX;
+    const y = e.clientY - offsetY;
+    win.style.left = x + 'px';
+    win.style.top = y + 'px';
+
+    const now = Date.now();
+    if (now - lastTrail > 25) {
+      lastTrail = now;
+      const trail = win.cloneNode(true);
+      trail.classList.add('trail');
+      trail.style.left = x + 'px';
+      trail.style.top = y + 'px';
+      trail.style.zIndex = 0;
+      document.body.appendChild(trail);
+      setTimeout(() => (trail.style.opacity = '0'), 80);
+      setTimeout(() => trail.remove(), 300);
+    }
   });
 }
 
 function centerWindow() {
-  createWindow(
-    (window.innerWidth - 320) / 2,
-    (window.innerHeight - 190) / 2
-  );
+  createWindow((window.innerWidth - 320) / 2, (window.innerHeight - 190) / 2);
 }
-
 centerWindow();
 </script>
-
 </body>
 </html>
