@@ -45,31 +45,33 @@
 
   .center-content {
     position: absolute;
-    top: 20%;
+    top: 8%; /* daha yukarı çıkarır (20% idi) */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     text-align: center;
+    z-index: 1;
   }
+
 
   h1 {
     position: relative;
     top: -40px;
-    font-family: 'VT323', monospace;
-    text-transform: uppercase;
     font-size: 48px;
     color: #7CFFB2;
-    text-shadow: 0 0 8px #40FFB0, 0 0 15px rgba(64,255,176,0.5);
+    text-shadow:
+      0 0 8px #40FFB0,
+      0 0 15px rgba(64,255,176,0.5);
     margin: 0;
     letter-spacing: 2px;
   }
 
   .profile {
-    width: 240px;
-    height: 240px;
+    width: 340px;
+    height: 340px;
     border: 2px solid #40FFB0;
     border-radius: 50%;
     background-image: url('dolphin.jpg');
@@ -86,9 +88,13 @@
     color: black;
     font-family: "MS Sans Serif", sans-serif;
     border: none;
-    box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080, 1px 1px 0 #404040;
+    box-shadow:
+      inset 1px 1px 0 #ffffff,
+      inset -1px -1px 0 #808080,
+      1px 1px 0 #404040;
     user-select: none;
-    transition: opacity 0.2s ease-out;
+    z-index: 999;
+    touch-action: none;
   }
 
   .title-bar {
@@ -101,7 +107,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #000000;
   }
 
   .close-ind {
@@ -117,13 +122,10 @@
     font-weight: bold;
     cursor: pointer;
     margin-left: 6px;
-    flex-shrink: 0;
   }
 
   .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    position: relative; /* sabitleme için eklendi */
     height: calc(100% - 26px);
     background-color: #d4d0c8;
     border-top: 2px solid #808080;
@@ -137,26 +139,24 @@
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    margin-top: 6px;
   }
 
   .message-icon {
     width: 66px;
     height: 66px;
-    image-rendering: pixelated;
   }
 
   .message-text {
     text-align: left;
     line-height: 1.6;
     font-size: 24px;
-    font-weight: 500;
   }
 
   .button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 12px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    margin: 0; /* ekstra boşluk olmasın */
   }
 
   .button {
@@ -172,56 +172,7 @@
     position: absolute;
     pointer-events: none;
     opacity: 1;
-    filter: none;
-    transition: opacity 0.3s linear;
-  }
-
-  /* === MOBİL UYUMLULUK === */
-  @media (max-width: 640px) {
-    body {
-      background-size: cover;
-      overflow: auto;
-    }
-
-    h1 {
-      font-size: 28px;
-      top: 0;
-      padding: 10px;
-    }
-
-    .profile {
-      width: 140px;
-      height: 140px;
-    }
-
-    .win98 {
-      width: 90vw;
-      height: auto;
-      left: 5vw !important;
-      top: 10vh !important;
-    }
-
-    .message-text {
-      font-size: 18px;
-    }
-
-    .button {
-      font-size: 12px;
-      padding: 6px 12px;
-    }
-
-    .cmd-input {
-      font-size: 16px !important;
-    }
-
-    .center-content {
-      top: 10%;
-      gap: 10px;
-    }
-
-    .trail {
-      opacity: 0.6;
-    }
+    transition: opacity 0.15s linear;
   }
 </style>
 </head>
@@ -233,16 +184,11 @@
   </div>
 
 <script>
-let clickCount = 0;
-let zCounter = 1000;
-let windowIndex = 0;
-const MAX_WINDOWS = 7;
-const OFFSET_X = 30;
-const OFFSET_Y = 30;
+let clickCount = 0, zCounter = 1000, windowIndex = 0;
+const MAX_WINDOWS = 7, OFFSET_X = 30, OFFSET_Y = 30;
 
 const seaSound = new Audio('underwatersound.mp3');
-seaSound.loop = true;
-seaSound.volume = 0.5;
+seaSound.loop = true; seaSound.volume = 0.5;
 const dolphinSound = new Audio('dolphinsound.mp3');
 dolphinSound.volume = 0.5;
 
@@ -261,11 +207,6 @@ const messages = [
   "maybe... stop?",
   "i’m starting to think you like chaos."
 ];
-const titles = [
-  "System Warning", "Deep Sea Protocol",
-  "Critical Question", "User Error",
-  "Ocean.exe", "dolphinOS Alert"
-];
 
 function createWindow(x, y) {
   windowIndex++;
@@ -274,23 +215,20 @@ function createWindow(x, y) {
   win.style.left = (x ?? 100) + 'px';
   win.style.top = (y ?? 100) + 'px';
   win.style.zIndex = ++zCounter;
-  win.style.touchAction = "none";
 
-  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-  const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-
-  // 🎲 Olasılık sistemi (%10 terminal, %5 kaçan pencere)
+  // Mod seçimi (%10 terminal, %5 runaway)
   const chance = Math.random();
   let mode = "normal";
   if (chance < 0.10) mode = "terminal";
   else if (chance < 0.15) mode = "runaway";
 
-  let innerHTML = '';
+  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
+  let html = "";
   if (mode === "terminal") {
-    innerHTML = `
+    html = `
       <div class="title-bar">
-        <span>${randomTitle} [terminal mode]</span>
+        <span>Deep Sea Protocol</span>
         <div class="close-ind">X</div>
       </div>
       <div class="content">
@@ -299,15 +237,12 @@ function createWindow(x, y) {
           width:100%;margin-top:10px;background:#000;color:#40FFB0;
           font-family:'VT323', monospace;font-size:20px;padding:4px;
           border:none;outline:none;">
-        <div class="button-container">
-          <button class="button">Execute</button>
-        </div>
-      </div>
-    `;
+        <div class="button-container"><button class="button">Execute</button></div>
+      </div>`;
   } else {
-    innerHTML = `
+    html = `
       <div class="title-bar">
-        <span>${randomTitle}</span>
+        <span>OceanOS</span>
         <div class="close-ind">X</div>
       </div>
       <div class="content">
@@ -315,165 +250,117 @@ function createWindow(x, y) {
           <img src="dolphinmini.png" class="message-icon" alt="icon">
           <div class="message-text">${randomMessage}</div>
         </div>
-        <div class="button-container">
-          <button class="button">Yes, but</button>
-        </div>
-      </div>
-    `;
+        <div class="button-container"><button class="button">Yes, but</button></div>
+      </div>`;
   }
 
-  win.innerHTML = innerHTML;
+  win.innerHTML = html;
   document.body.appendChild(win);
+  dolphinSound.currentTime = 0; dolphinSound.play().catch(()=>{});
 
-  const closeBtn = win.querySelector('.close-ind');
-  closeBtn.addEventListener('click', (e) => {
+  win.querySelector('.close-ind').addEventListener('click', e => {
     e.stopPropagation();
     alert("sorry but answer the question first ¯\\_(ツ)_/¯");
   });
 
-  dolphinSound.currentTime = 0;
-  dolphinSound.play().catch(()=>{});
+  if (mode === "terminal") setupTerminal(win);
+  else if (mode === "runaway") setupRunaway(win);
+  else setupNormal(win);
 
-  // === Easter Egg #5: Terminal davranışı (felsefi random + typing efekti) ===
-  const input = win.querySelector('.cmd-input');
-  if (input) {
-    const executeBtn = win.querySelector('.button');
-    const output = win.querySelector('.message-text');
-    let awaitingAnswer = true;
-
-    const questions = [
-      {
-        q: "do you think reality cares about you?",
-        yes: "> then you’ve mistaken coincidence for affection.",
-        no:  "> reality doesn’t care, and that’s freedom."
-      },
-      {
-        q: "would you erase your memories if you could?",
-        yes: "> and lose what made you you?",
-        no:  "> so you choose the weight over the void."
-      },
-      {
-        q: "is the truth worth the pain?",
-        yes: "> brave. but truth doesn't love you back.",
-        no:  "> then maybe illusion is your chosen oxygen."
-      },
-      {
-        q: "if no one remembers you, do you still exist?",
-        yes: "> memories are waves. they fade, but the ocean stays.",
-        no:  "> then perhaps you never did."
-      }
-    ];
-
-    const chosen = questions[Math.floor(Math.random() * questions.length)];
-
-    function typeText(element, text, delay = 25, callback) {
-      element.textContent = '';
-      let i = 0;
-      const interval = setInterval(() => {
-        element.textContent += text[i];
-        i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-          if (callback) callback();
-        }
-      }, delay);
-    }
-
-    typeText(output, `> ${chosen.q}`);
-
-    executeBtn.addEventListener('click', runCommand);
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') runCommand();
-    });
-
-    function runCommand() {
-      const cmd = input.value.trim().toLowerCase();
-      input.value = '';
-
-      if (awaitingAnswer) {
-        if (cmd === 'yes' || cmd === 'no') {
-          input.style.display = 'none';
-          executeBtn.style.display = 'none';
-          awaitingAnswer = false;
-
-          typeText(output, chosen[cmd], 30);
-
-          if (Math.random() < 0.5) {
-            for (let i = 0; i < 7; i++) {
-              setTimeout(() => {
-                const s = dolphinSound.cloneNode();
-                s.volume = 0.4 - i * 0.05;
-                s.play().catch(()=>{});
-              }, i * 400);
-            }
-          }
-
-          const reset = Math.random() < 0.5;
-          setTimeout(() => {
-            if (reset) {
-              document.querySelectorAll('.win98').forEach(el => el.remove());
-              clickCount = 0;
-              centerWindow();
-            } else {
-              win.remove();
-            }
-          }, 3000);
-        } else {
-          output.textContent = "> answer with 'yes' or 'no'.";
-        }
-      }
-    }
-  }
-
-  // === Easter Egg #6: Kaçan pencere ===
-  if (mode === "runaway") {
-    const button = win.querySelector('.button');
-    if (button) {
-      win.style.transition = 'left 0.25s ease-out, top 0.25s ease-out';
-      win.addEventListener('mousemove', (e) => {
-        const rect = button.getBoundingClientRect();
-        const dist = Math.hypot(e.clientX - (rect.left + rect.width / 2), e.clientY - (rect.top + rect.height / 2));
-        if (dist < 80) {
-          let newLeft = parseInt(win.style.left) + (Math.random() * 100 - 50);
-          let newTop = parseInt(win.style.top) + (Math.random() * 100 - 50);
-          newLeft = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newLeft));
-          newTop = Math.max(0, Math.min(window.innerHeight - win.offsetHeight, newTop));
-          win.style.left = newLeft + 'px';
-          win.style.top = newTop + 'px';
-        }
-      });
-    }
-  }
-
-  const btn = win.querySelector('.button');
-  if (btn && mode === "normal") {
-    btn.addEventListener('click', () => {
-      clickCount++;
-      btn.disabled = true;
-      btn.style.opacity = '0.6';
-      const rect = win.getBoundingClientRect();
-      win.remove();
-      if (clickCount < MAX_WINDOWS) {
-        createWindow(rect.left + OFFSET_X, rect.top + OFFSET_Y);
-      } else {
-        window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
-      }
-    });
-  }
-
-  makeDraggable(win, win.querySelector('.title-bar'), closeBtn);
+  makeDraggable(win, win.querySelector('.title-bar'));
 }
 
-/* === Sürükleme + lag efekti === */
-function makeDraggable(win, handle, closeBtn) {
+function setupNormal(win) {
+  const btn = win.querySelector('.button');
+  btn.addEventListener('click', () => {
+    clickCount++;
+    const rect = win.getBoundingClientRect();
+    win.remove();
+    if (clickCount < MAX_WINDOWS) createWindow(rect.left + OFFSET_X, rect.top + OFFSET_Y);
+    else window.location.href = "https://www.youtube.com/watch?v=WQO-aOdJLiw";
+  });
+}
+
+function setupRunaway(win) {
+  const btn = win.querySelector('.button');
+  win.style.transition = 'left 0.25s ease-out, top 0.25s ease-out';
+  win.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const dist = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
+    if (dist < 80) {
+      let newLeft = parseInt(win.style.left) + (Math.random() * 100 - 50);
+      let newTop = parseInt(win.style.top) + (Math.random() * 100 - 50);
+      newLeft = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newLeft));
+      newTop = Math.max(0, Math.min(window.innerHeight - win.offsetHeight, newTop));
+      win.style.left = newLeft + 'px';
+      win.style.top = newTop + 'px';
+    }
+  });
+}
+
+function setupTerminal(win) {
+  const input = win.querySelector('.cmd-input');
+  const btn = win.querySelector('.button');
+  const output = win.querySelector('.message-text');
+  const qset = [
+    { q: "do you think reality cares about you?", yes: "> then you’ve mistaken coincidence for affection.", no: "> reality doesn’t care, and that’s freedom." },
+    { q: "would you erase your memories if you could?", yes: "> and lose what made you you?", no: "> so you choose the weight over the void." },
+    { q: "is the truth worth the pain?", yes: "> brave. but truth doesn't love you back.", no: "> then maybe illusion is your chosen oxygen." },
+    { q: "if no one remembers you, do you still exist?", yes: "> memories are waves. they fade, but the ocean stays.", no: "> then perhaps you never did." },
+    { q: "are you alone?", yes: "> aren't we all?", no: "> yes you're" }
+  ];
+  const chosen = qset[Math.floor(Math.random() * qset.length)];
+  typeText(output, "> " + chosen.q);
+  let answered = false;
+
+  btn.addEventListener('click', runCmd);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') runCmd(); });
+
+  function runCmd() {
+    const cmd = input.value.trim().toLowerCase();
+    input.value = "";
+    if (!answered) {
+      if (cmd === "yes" || cmd === "no") {
+        answered = true;
+        input.style.display = 'none';
+        btn.style.display = 'none';
+        typeText(output, chosen[cmd]);
+        chainDolphinSounds();
+        setTimeout(() => {
+          if (Math.random() < 0.5) document.querySelectorAll('.win98').forEach(e => e.remove());
+          else win.remove();
+          clickCount = 0;
+          centerWindow();
+        }, 3000);
+      } else output.textContent = "> answer with 'yes' or 'no'.";
+    }
+  }
+}
+
+function typeText(el, text, delay=25) {
+  el.textContent = "";
+  let i = 0;
+  const interval = setInterval(() => {
+    el.textContent += text[i++];
+    if (i >= text.length) clearInterval(interval);
+  }, delay);
+}
+
+function chainDolphinSounds() {
+  for (let i = 0; i < 7; i++) {
+    setTimeout(() => {
+      const s = dolphinSound.cloneNode();
+      s.volume = 0.4 - i * 0.05;
+      s.play().catch(()=>{});
+    }, i * 400);
+  }
+}
+
+function makeDraggable(win, handle) {
   let offsetX = 0, offsetY = 0, isDragging = false;
   let lastTrail = 0;
-  handle.style.touchAction = "none";
-  win.style.touchAction = "none";
 
   handle.addEventListener('pointerdown', e => {
-    if (e.target === closeBtn) return;
-    e.preventDefault();
     isDragging = true;
     offsetX = e.clientX - win.offsetLeft;
     offsetY = e.clientY - win.offsetTop;
@@ -501,14 +388,17 @@ function makeDraggable(win, handle, closeBtn) {
       trail.style.top = y + 'px';
       trail.style.zIndex = 0;
       document.body.appendChild(trail);
-      setTimeout(() => (trail.style.opacity = '0'), 80);
-      setTimeout(() => trail.remove(), 300);
+      setTimeout(() => (trail.style.opacity = '0'), 50);
+      setTimeout(() => trail.remove(), 200);
     }
   });
 }
 
 function centerWindow() {
-  createWindow((window.innerWidth - 320) / 2, (window.innerHeight - 190) / 2);
+  createWindow(
+    (window.innerWidth - 320) / 2,
+    (window.innerHeight - 190) / 2 + 100  // pencereyi daha aşağı başlat
+  );
 }
 centerWindow();
 </script>
