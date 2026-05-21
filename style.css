@@ -707,3 +707,315 @@
       padding: 15px;
     }
   }
+
+  /* ======== NOSTALGIC 2000s FORUM/BLOG STYLES ======== */
+  .blog-body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: #cccccc;
+    overflow-y: auto;
+    background-color: #000000;
+    line-height: 1.4;
+  }
+
+  .blog-container {
+    width: 95%;
+    max-width: 1000px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 5;
+  }
+
+  /* Old school Windows Bevels */
+  .blog-header {
+    background-color: #1a1a1a;
+    border: 2px solid;
+    border-color: #555 #000 #000 #555;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .blog-title {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .blog-subtitle {
+    color: #888888;
+    font-size: 12px;
+  }
+
+  .blog-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  /* Sidebar */
+  .blog-sidebar {
+    background-color: #1a1a1a;
+    border: 2px solid;
+    border-color: #555 #000 #000 #555;
+    padding: 10px;
+    position: sticky;
+    top: 10px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .ascii-logo {
+    color: #4da6ff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    line-height: 1.1;
+    text-align: center;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 10px;
+    font-weight: bold;
+    overflow-x: hidden;
+  }
+
+  .blog-sidebar h3 {
+    color: #ffffff;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #333333;
+    padding: 3px 5px;
+    border: 1px solid #555555;
+  }
+
+  .blog-search {
+    width: 100%;
+    padding: 3px;
+    margin-bottom: 15px;
+    background: #000000;
+    border: 2px inset #555;
+    color: #00ff00; /* Hacker green text */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+  }
+
+  .post-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .post-list-item {
+    color: #999999;
+    padding: 8px 5px;
+    cursor: pointer;
+    font-size: 12px;
+    border-bottom: 1px dashed #333;
+  }
+
+  .post-list-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #cccccc;
+  }
+
+  .post-list-date {
+    font-size: 10px;
+    color: #666666;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .post-list-item:hover {
+    background-color: #222222;
+    color: #ffffff;
+  }
+
+  .post-list-item.active {
+    background-color: #333333;
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  /* Main Content */
+  .blog-content {
+    background-color: #1a1a1a;
+    border: 2px solid;
+    border-color: #555 #000 #000 #555;
+    padding: 20px;
+    min-height: 60vh;
+  }
+
+  .post-header-main {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+  }
+
+  .post-header-main h2 {
+    color: #ffffff;
+    font-size: 22px;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .post-date {
+    color: #777777;
+    font-size: 11px;
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    color: #4da6ff;
+    font-size: 11px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+
+  .tag::before {
+    content: "[";
+    color: #666;
+  }
+  .tag::after {
+    content: "]";
+    color: #666;
+  }
+
+  .post-image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    background-color: #000;
+    margin-bottom: 20px;
+    border: 2px inset #444;
+  }
+
+  .post-body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: #cccccc;
+    font-size: 13px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .post-body p {
+    margin-bottom: 12px;
+  }
+  
+  .post-body pre {
+    background-color: #000000;
+    padding: 10px;
+    border: 2px inset #555;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+  
+  .post-body code {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #000;
+    color: #00ff00;
+  }
+  
+  .post-body h2, .post-body h3 {
+    color: #ffffff;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    border-bottom: 1px dotted #555;
+  }
+
+  /* Classic buttons and links */
+  .retro-link {
+    display: inline-block;
+    color: #4da6ff;
+    text-decoration: underline;
+    font-size: 12px;
+    padding: 5px 0;
+  }
+  
+  .retro-link:hover {
+    color: #ffffff;
+  }
+
+  .retro-btn {
+    background-color: #cccccc;
+    color: #000000;
+    border: 2px outset #ffffff;
+    padding: 3px 8px;
+    font-family: Tahoma, Verdana, sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .retro-btn:active, .retro-btn.active {
+    border: 2px inset #ffffff;
+    background-color: #aaaaaa;
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 768px) {
+    .blog-container {
+      width: 98%;
+      margin: 10px auto;
+    }
+    
+    .blog-header {
+      flex-direction: column;
+      text-align: center;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .blog-title {
+      font-size: 18px;
+    }
+
+    .blog-layout {
+      grid-template-columns: 1fr;
+    }
+    
+    .blog-sidebar {
+      position: static;
+      max-height: 250px;
+      padding: 10px;
+    }
+
+    .ascii-logo {
+      font-size: 8px; /* Scale down on mobile */
+      margin-bottom: 5px;
+      padding-bottom: 5px;
+    }
+
+    .blog-content {
+      padding: 10px 15px;
+    }
+    
+    .post-header-main h2 {
+      font-size: 18px;
+    }
+    
+    .post-body {
+      font-size: 12px;
+    }
+  }

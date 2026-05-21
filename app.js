@@ -73,7 +73,7 @@
     
     document.getElementById('btn-docs').addEventListener('click', (e) => {
       e.stopPropagation();
-      initInteraction();
+      window.location.href = 'whitepaper.html';
     });
 
     // Nav items - Runaway Joke

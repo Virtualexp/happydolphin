@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE WHITEPAPER - DO NOT DISTRIBUTE</title>
+  
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XYJWCW1GJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6XYJWCW1GJ');
+  </script>
+
+  <!-- MathJax for LaTeX support -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['$$', '$$']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <!-- Using tex-svg instead of chtml to avoid file:// CORS and font loading errors -->
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  
+</head>
+<body class="blog-body">
+
+  <div class="bg-image"></div>
+  <div class="bg-overlay"></div>
+
+  <audio id="wind-audio" src="underwatersound.mp3" loop></audio>
+
+  <div class="blog-container">
+    <div class="blog-header">
+      <div>
+        <h1 class="blog-title">THE TRUTH (Whitepaper v0.1)</h1>
+        <p class="blog-subtitle">Gizli Notlar, Akademik Derlemeler & Düşünceler</p>
+      </div>
+      <div class="audio-controls">
+        <button id="audio-toggle" class="retro-btn">Ses: KAPALI</button>
+      </div>
+    </div>
+
+    <div class="blog-layout">
+      <!-- Sidebar / Menu -->
+      <aside class="blog-sidebar">
+        <!-- ASCII Logo -->
+        <pre class="ascii-logo">
+       .
+      / \
+     /   \
+    /     \
+   /       \
+~~/~~~~~~~~~\~~
+ DOLPHIN.CORP
+        </pre>
+
+        <h3>İçindekiler</h3>
+        
+        <!-- Search Input -->
+        <input type="text" id="search-input" class="blog-search" placeholder="Başlık veya etiket ara...">
+
+        <ul id="post-list" class="post-list">
+          <!-- JS will populate titles here -->
+        </ul>
+        <div style="margin-top: 30px;">
+          <a href="index.html" class="retro-link">← Ana Sayfaya Dön</a>
+        </div>
+      </aside>
+
+      <!-- Main Reading Area -->
+      <main class="blog-content">
+        <div id="reading-area">
+          <p style="color: #94a3b8; font-style: italic;">Okumak için sol taraftan bir yazı seçin.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Load data file first -->
+  <script src="posts.js"></script>
+
+  <script>
+    // Blog Rendering Logic
+    const postList = document.getElementById('post-list');
+    const readingArea = document.getElementById('reading-area');
+    const searchInput = document.getElementById('search-input');
+    
+    // Sort posts descending
+    const sortedPosts = [...myPosts].sort((a, b) => b.id - a.id);
+
+    function renderPost(postId) {
+      const post = myPosts.find(p => p.id === postId);
+      if (!post) return;
+
+      let imageHtml = '';
+      if (post.image && post.image.trim() !== '') {
+        imageHtml = `<img src="${post.image}" alt="Post image" class="post-image">`;
+      }
+
+      let tagsHtml = '';
+      if (post.tags && post.tags.length > 0) {
+        tagsHtml = '<div class="post-tags">' + post.tags.map(tag => `<span class="tag">#${tag}</span>`).join('') + '</div>';
+      }
+
+      readingArea.innerHTML = `
+        <article class="post-article">
+          <div class="post-header-main">
+            <h2>${post.title}</h2>
+            <div class="post-meta">
+              <span class="post-date">${post.date}</span>
+              ${tagsHtml}
+            </div>
+          </div>
+          ${imageHtml}
+          <div class="post-body">
+            ${post.content}
+          </div>
+        </article>
+      `;
+
+      // Trigger MathJax parsing only if it has fully loaded
+      if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise().catch((err) => console.log('MathJax error: ', err));
+      }
+
+      // Update active state in sidebar
+      document.querySelectorAll('.post-list-item').forEach(li => {
+        li.classList.remove('active');
+        if (parseInt(li.dataset.id) === postId) {
+          li.classList.add('active');
+        }
+      });
+      
+      // Scroll to top of reading area on mobile
+      if(window.innerWidth <= 768) {
+        readingArea.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function renderList(filter = '') {
+      postList.innerHTML = '';
+      const lowerFilter = filter.toLowerCase();
+
+      const filtered = sortedPosts.filter(post => {
+        const titleMatch = post.title.toLowerCase().includes(lowerFilter);
+        const tagsMatch = post.tags && post.tags.some(tag => tag.toLowerCase().includes(lowerFilter));
+        return titleMatch || tagsMatch;
+      });
+
+      filtered.forEach(post => {
+        const li = document.createElement('li');
+        li.className = 'post-list-item';
+        li.dataset.id = post.id;
+        li.innerHTML = `
+          <div class="post-list-title">${post.title}</div>
+          <div class="post-list-date">${post.date}</div>
+        `;
+        li.addEventListener('click', () => renderPost(post.id));
+        postList.appendChild(li);
+      });
+      
+      if (filtered.length > 0) {
+          renderPost(filtered[0].id);
+      } else {
+          readingArea.innerHTML = `<p style="color: #94a3b8; font-style: italic;">Sonuç bulunamadı.</p>`;
+      }
+    }
+
+    searchInput.addEventListener('input', (e) => {
+      renderList(e.target.value);
+    });
+
+    // Audio Toggle Script
+    const audio = document.getElementById('wind-audio');
+    const toggleBtn = document.getElementById('audio-toggle');
+    let isPlaying = false;
+
+    toggleBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        audio.pause();
+        toggleBtn.textContent = 'Ses: KAPALI';
+        toggleBtn.classList.remove('active');
+        isPlaying = false;
+      } else {
+        audio.play().catch(e => console.log("Audio play failed:", e));
+        toggleBtn.textContent = 'Ses: AÇIK';
+        toggleBtn.classList.add('active');
+        isPlaying = true;
+      }
+    });
+
+    // Initialize
+    renderList();
+  </script>
+
+</body>
+</html>
