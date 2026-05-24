@@ -83,7 +83,7 @@ const DESCRIPTIONS_EN = [
 ];
 let DESCRIPTIONS = DESCRIPTIONS_TR;
 
-const MATRIX_TEXTS = {
+const MATRIX_TEXTS_TR = {
   "0,0": "İki Romantik karşılaştığında, karşılıksız umut sonsuz bir yankıya dönüşür. Her ikisi de birbirini besler (+2). Saf bir ütopya.",
   "0,1": "Romantik, umutla elini uzatır. Nihilist ise bu umudu tereddütsüz yutar (+3). Romantik tükenirken (-1), acımasız gerçeklik kazanır.",
   "0,2": "Romantik umut eder, Aynacı da bu umudu yansıtır (+2). Şartsız iyilik, adaleti bile şefkate dönüştürür.",
@@ -101,6 +101,27 @@ const MATRIX_TEXTS = {
   "3,2": "Aynacı ve Kırık Kalp, her ikisi de ilk adımı umutla atar (+2). Okyanusu bulandıracak bir ihanet olmadığı için, huzur içinde yüzerler.",
   "3,3": "İki Kırık Kalp karşılaştığında, ikisi de birbirine şefkatle yaklaşır (+2). Travmaları asla tetiklenmez, karanlık sular geçici bir cennete döner."
 };
+
+const MATRIX_TEXTS_EN = {
+  "0,0": "When two Naives meet, unconditional hope becomes an infinite echo. They feed each other (+2). A pure utopia.",
+  "0,1": "Naive reaches out with hope. Defector devours this hope without hesitation (+3). While Naive is depleted (-1), cruel reality wins.",
+  "0,2": "Naive hopes, Tit-for-Tat reflects this hope (+2). Unconditional goodness turns even justice into affection.",
+  "0,3": "Grudger is initially hopeful. When meeting Naive, it remains in trust (+2). Its trauma is never triggered.",
+  "1,0": "Naive reaches out with hope. Defector devours this hope without hesitation (+3). While Naive is depleted (-1), cruel reality wins.",
+  "1,1": "Two Defectors clash in the dark. Since neither gives anything (0), both starve in the void they created.",
+  "1,2": "Tit-for-Tat initially trusts, but Defector exploits it (+3). However, in later rounds, Tit-for-Tat builds a wall. Short-term gain brings long-term isolation.",
+  "1,3": "Defector ruthlessly exploits the pure Grudger (+3). But this exploitation causes Grudger to freeze and seek revenge.",
+  "2,0": "Naive hopes, Tit-for-Tat reflects this hope (+2). Unconditional goodness turns even justice into affection.",
+  "2,1": "Tit-for-Tat initially trusts, but Defector exploits it (+3). However, in later rounds, Tit-for-Tat builds a wall. Short-term gain brings long-term isolation.",
+  "2,2": "When two Tit-for-Tats meet, they take the first step with trust (+2). Justice and balance last forever without breaking.",
+  "2,3": "Tit-for-Tat and Grudger both take the first step with hope (+2). Since there is no betrayal to muddy the ocean, they swim in peace.",
+  "3,0": "Grudger is initially hopeful. When meeting Naive, it remains in trust (+2). Its trauma is never triggered.",
+  "3,1": "Defector ruthlessly exploits the pure Grudger (+3). But this exploitation causes Grudger to freeze and seek revenge.",
+  "3,2": "Tit-for-Tat and Grudger both take the first step with hope (+2). Since there is no betrayal to muddy the ocean, they swim in peace.",
+  "3,3": "When two Grudgers meet, both approach with affection (+2). Their traumas are never triggered, the dark waters turn into a temporary paradise."
+};
+
+let CURRENT_MATRIX_TEXTS = MATRIX_TEXTS_TR;
 
 let matrixViewed = 0;
 const PAYOFF = {
@@ -133,6 +154,7 @@ function setLanguage(lang) {
   
   NAMES = lang === 'tr' ? NAMES_TR : NAMES_EN;
   DESCRIPTIONS = lang === 'tr' ? DESCRIPTIONS_TR : DESCRIPTIONS_EN;
+  CURRENT_MATRIX_TEXTS = lang === 'tr' ? MATRIX_TEXTS_TR : MATRIX_TEXTS_EN;
   
   let cells = document.querySelectorAll('.matrix-cell');
   cells.forEach(cell => {
@@ -356,8 +378,7 @@ function buildMatrix() {
       cell.setAttribute('data-j', c);
       cell.onclick = () => {
         let descEl = document.getElementById('matrix-desc-text');
-        let payout = getPayoff(r, c);
-        descEl.innerHTML = `${NAMES[r]} / ${NAMES[c]} ${langData[currentLang].matrix_click} ${payout[0]}, ${payout[1]}`;
+        descEl.innerHTML = CURRENT_MATRIX_TEXTS[`${r},${c}`];
         
         if (!cell.classList.contains('viewed')) {
           cell.classList.add('viewed');
