@@ -282,12 +282,6 @@ function setup() {
     controlPanelEl.style('display', 'block');
     document.getElementById('academic-panel').style.display = 'block';
     
-    let ambientAudio = document.getElementById('ambient-audio');
-    if (ambientAudio) {
-      ambientAudio.volume = 0.3;
-      ambientAudio.play().catch(err => console.log("Audio play blocked by browser.", err));
-    }
-    
     gameState = 1;
     buildSandboxAgents();
   });
