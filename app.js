@@ -68,7 +68,7 @@
     // Hero buttons
     document.getElementById('btn-start').addEventListener('click', (e) => {
       e.stopPropagation();
-      initInteraction();
+      window.location.href = 'trial.html';
     });
     
     document.getElementById('btn-docs').addEventListener('click', (e) => {

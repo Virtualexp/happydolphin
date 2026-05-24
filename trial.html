@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anlamın Ayakta Kalması</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <meta name="description" content="Karanlık okyanustaki varoluşsal matrisin ilkelerini belirleyin. Hangi felsefenin hayatta kalacağını izleyin.">
+  <meta property="og:title" content="Anlamın Ayakta Kalması">
+  <meta property="og:description" content="Varoluşsal matrisi keşfedin ve felsefelerin okyanustaki hayatta kalma mücadelesini deneyimleyin.">
+  <meta property="og:image" content="dolphinmini.png">
+  <meta property="og:type" content="website">
+  
+  <link rel="icon" type="image/png" href="dolphinmini.png">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6XYJWCW1GJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-6XYJWCW1GJ');
+  </script>
+
+  <!-- KaTeX for Academic Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+  <link rel="stylesheet" href="trial.css">
+</head>
+<body>
+  
+  <div id="canvas-container"></div>
+
+  <!-- Language Toggle -->
+  <div id="lang-toggle">
+    <span id="lang-tr" class="active">TR</span> | <span id="lang-en">EN</span>
+  </div>
+
+  <!-- Noise / Grain Overlay for melancholy aesthetic -->
+  <div class="grain-overlay"></div>
+
+  <!-- Ambient Audio -->
+  <audio id="ambient-audio" src="underwatersound.mp3" loop></audio>
+
+  <!-- Matrix Intro Panel -->
+  <div id="matrix-panel">
+    <div class="panel-header" data-i18n="matrix_title">Varoluşsal Kesişimler</div>
+    <p class="matrix-instructions" data-i18n="matrix_inst">İki farklı bilincin karşılaştığında ne yapacağını görmek için tablodan bir kesişime tıklayın. Tüm olasılıkları keşfettikten sonra evrim simülasyonuna geçebilirsiniz.</p>
+    <div id="matrix-grid-container">
+      <!-- JS will build the 5x5 grid here -->
+    </div>
+    <div id="matrix-desc">
+      <p id="matrix-desc-text" data-i18n="matrix_wait">Kesişim seç bekleniyor...</p>
+    </div>
+    <button id="btn-proceed" style="display:none;" data-i18n="btn_proceed">Simülasyona Geç</button>
+  </div>
+
+  <!-- Sandbox Control Panel -->
+  <div id="control-panel" style="display: none;">
+    <div class="panel-header" style="position: relative;">
+      <span data-i18n="vars_title">Varoluşsal Değişkenler</span>
+      <span id="panel-toggle" style="position: absolute; right: 20px; cursor: pointer; font-size: 12px; top: 18px;">▼</span>
+    </div>
+    <div class="panel-body" id="control-panel-body">
+      <p class="panel-desc" data-i18n="vars_desc">Karanlık okyanustaki varoluşsal matrisin ilkelerini belirleyin. Hangi felsefenin hayatta kalacağını, hangisinin karanlığa gömüleceğini kendi gözlerinizle izleyin.</p>
+      
+      <div class="character-row">
+        <div class="char-label-row">
+          <div class="char-info">
+            <span class="char-name" style="color: #ffd1dc;" data-i18n="char_name_0">Romantik (Saf)</span>
+            <div class="char-desc" data-i18n="char_desc_0">Koşulsuz güvenir, hep affeder.</div>
+          </div>
+          <span class="char-count" id="count-romantik">10</span>
+        </div>
+        <input type="range" min="0" max="30" value="10" class="slider-romantik" id="slider-romantik" data-type="romantik">
+      </div>
+      
+      <div class="character-row">
+        <div class="char-label-row">
+          <div class="char-info">
+            <span class="char-name" style="color: #ff4d4d;" data-i18n="char_name_1">Nihilist (Kötü)</span>
+            <div class="char-desc" data-i18n="char_desc_1">Sadece kendini düşünür, ihanet eder.</div>
+          </div>
+          <span class="char-count" id="count-nihilist">10</span>
+        </div>
+        <input type="range" min="0" max="30" value="10" class="slider-nihilist" id="slider-nihilist" data-type="nihilist">
+      </div>
+      
+      <div class="character-row">
+        <div class="char-label-row">
+          <div class="char-info">
+            <span class="char-name" style="color: #87ceeb;" data-i18n="char_name_2">Aynacı (Kopyacı)</span>
+            <div class="char-desc" data-i18n="char_desc_2">İlk adımı dostçadır, sonra kopyalar.</div>
+          </div>
+          <span class="char-count" id="count-aynaci">10</span>
+        </div>
+        <input type="range" min="0" max="30" value="10" class="slider-aynaci" id="slider-aynaci" data-type="aynaci">
+      </div>
+      
+      <div class="character-row">
+        <div class="char-label-row">
+          <div class="char-info">
+            <span class="char-name" style="color: #d1b3ff;" data-i18n="char_name_3">Kırık Kalp (Kinci)</span>
+            <div class="char-desc" data-i18n="char_desc_3">Kırılırsa dünyayı yakar, affetmez.</div>
+          </div>
+          <span class="char-count" id="count-kirik">10</span>
+        </div>
+        <input type="range" min="0" max="30" value="10" class="slider-kirik" id="slider-kirik" data-type="kirik">
+      </div>
+
+      <button id="btn-start-evolution" data-i18n="btn_evo">Evrimsel Seçilimi Uygula</button>
+    </div>
+  </div>
+
+  <!-- Academic Analysis Panel -->
+  <div id="academic-panel" style="display: none;">
+    <div class="academic-header" data-i18n="acad_title">Evrimsel Oyun Teorisi Analizi</div>
+    <div class="academic-body">
+      <div id="academic-math"></div>
+      <hr class="academic-divider">
+      <div id="academic-content"></div>
+    </div>
+    <button id="btn-academic-close" data-i18n="btn_close">Raporu Kapat</button>
+  </div>
+
+  <script src="trial.js"></script>
+</body>
+</html>
