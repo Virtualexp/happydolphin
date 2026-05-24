@@ -38,7 +38,8 @@ const langData = {
     acad_title: "Evrimsel Oyun Teorisi Analizi",
     btn_close: "Raporu Kapat",
     report_title: "Popülasyon Frekansları:",
-    report_win: "Tüm ekosistem tek bir felsefe tarafından ele geçirildi:"
+    report_win: "Tüm ekosistem tek bir felsefe tarafından ele geçirildi:",
+    matrix_click: "karşılaştı. Skorlar:"
   },
   en: {
     matrix_title: "Existential Intersections",
@@ -59,7 +60,8 @@ const langData = {
     acad_title: "Evolutionary Game Theory Analysis",
     btn_close: "Close Report",
     report_title: "Population Frequencies:",
-    report_win: "The entire ecosystem has been taken over by a single philosophy:"
+    report_win: "The entire ecosystem has been taken over by a single philosophy:",
+    matrix_click: "met. Scores:"
   }
 };
 
