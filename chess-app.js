@@ -13,12 +13,12 @@ const chessGames = [
   whiteElo: "1493",
   black: "lazaru_s",
   blackElo: "1455",
-  event: "casual bullet game",
+  event: "Casual Bullet Game",
   location: "Charlies",
   date: "2026.05.31",
   opening: "Sicilian Defense: Bowdler Attack",
   pgnString: "1. e4 c5 2. Bc4 e6 3. d3 Nc6 4. Nf3 Nf6 5. Nc3 h6 6. Be3 a6 7. O-O Be7 8. Re1 O-O 9. Ne2 d5 10. exd5 exd5 11. Bb3 Re8 12. Ng3 d4 13. Bf4 Bd6 14. Bxd6 Rxe1+ 15. Qxe1 Qxd6 16. Qe2 Bd7 17. Re1 Re8 18. Ne4 Qf4 19. g3 Qg4 20. Bd5 Nxe4 21. dxe4 Qh3 22. Qf1 Qg4 23. e5 Qf5 24. Bxc6 Bxc6 25. Nh4 Qxc2 26. Ng6 fxg6 27. Qh3 Qd2 28. Re4 Qd1+"
-}
+},
 
 
 
@@ -48,16 +48,6 @@ const chessGames = [
   pgnString: "1. d4 e6 2. c4 Qh4 3. Nc3 Nc6 4. Nf3 Qf6 5. e3 d5 6. a3 Bd7 7. Be2 O-O-O 8. O-O Nge7 9. h3 Nf5 10. Re1 Bd6 11. c5 Be7 12. Bd3 Rhe8 13. e4 Nfxd4 14. Nxd4 Qxd4 15. exd5 Ne5 16. Be3 Qxd3 17. Bd2 Bf6 18. d6 Nc4 19. Ne4 cxd6 20. Nxd6+ Kb8 21. Nxe8 Rxe8 22. Rb1 Bxb2 23. Bf4+ e5 24. Qxd3"
 }
   
-
-
-
-
-
-
-
-
-
-
 ];
 
 // 2. Piece Images (Wikimedia Commons)
