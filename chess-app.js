@@ -9,9 +9,9 @@ const chessGames = [
 
 {
   id: "SyvohauZ",
-  white: "MustafaKemalK",
+  white: "Mustafa Kemal K.",
   whiteElo: "1493",
-  black: "lazaru_s",
+  black: "Burak G.",
   blackElo: "1455",
   event: "Casual Bullet Game",
   location: "Charlies",
@@ -20,15 +20,13 @@ const chessGames = [
   pgnString: "1. e4 c5 2. Bc4 e6 3. d3 Nc6 4. Nf3 Nf6 5. Nc3 h6 6. Be3 a6 7. O-O Be7 8. Re1 O-O 9. Ne2 d5 10. exd5 exd5 11. Bb3 Re8 12. Ng3 d4 13. Bf4 Bd6 14. Bxd6 Rxe1+ 15. Qxe1 Qxd6 16. Qe2 Bd7 17. Re1 Re8 18. Ne4 Qf4 19. g3 Qg4 20. Bd5 Nxe4 21. dxe4 Qh3 22. Qf1 Qg4 23. e5 Qf5 24. Bxc6 Bxc6 25. Nh4 Qxc2 26. Ng6 fxg6 27. Qh3 Qd2 28. Re4 Qd1+"
 },
 
-
-
   {
     id: "smaiiiii_lazaru_s_2025",
     white: "S. T.",
     whiteElo: "1500",
     black: "Burak G.",
     blackElo: "1603",
-    event: "Casual rapid game",
+    event: "Casual Rapid Game",
     location: "Library",
     date: "2025.02.09",
     opening: "Sicilian Defense: Bowdler Attack",
@@ -41,7 +39,7 @@ const chessGames = [
   whiteElo: "1500",
   black: "Mustafa K.",
   blackElo: "1169",
-  event: "Casual blitz game",
+  event: "Casual Blitz Game",
   location: "Collesium",
   date: "2021.03.28",
   opening: "Horwitz Defense",
